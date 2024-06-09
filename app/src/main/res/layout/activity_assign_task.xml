@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/neutral"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Section 1: Create Task -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="@color/white"
+            android:layout_marginBottom="32dp">
+
+            <!-- Section Title -->
+            <TextView
+                android:id="@+id/text_create_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create Task"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Task Name -->
+            <TextView
+                android:id="@+id/text_task_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task Name"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_below="@id/text_create_task"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/edit_task_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_task_name"
+                android:layout_marginTop="8dp"
+                android:hint="Enter task name"
+                android:padding="8dp"
+                android:background="@drawable/edittext_background" />
+
+            <!-- Task Description -->
+            <TextView
+                android:id="@+id/text_task_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task Description"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_below="@id/edit_task_name"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/edit_task_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_task_description"
+                android:layout_marginTop="8dp"
+                android:hint="Enter task description"
+                android:padding="8dp"
+                android:background="@drawable/edittext_background" />
+
+            <!-- Task Date -->
+            <TextView
+                android:id="@+id/text_task_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Due Date"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_below="@id/edit_task_description"
+                android:layout_marginTop="16dp" />
+
+            <DatePicker
+                android:id="@+id/date_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_task_date"
+                android:layout_marginTop="8dp" />
+
+            <!-- Buttons for Create Task -->
+            <LinearLayout
+                android:id="@+id/buttons_create_task"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/date_picker"
+                android:layout_marginTop="32dp">
+
+                <Button
+                    android:id="@+id/btn_add_task"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/black"
+                    android:text="Add"
+                    android:textColor="@android:color/white"
+                    android:padding="12dp"
+                    android:layout_marginEnd="8dp" />
+
+                <Button
+                    android:id="@+id/btn_update_task"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/black"
+                    android:text="Update"
+                    android:textColor="@android:color/white"
+                    android:padding="12dp"
+                    android:layout_marginEnd="8dp" />
+
+                <Button
+                    android:id="@+id/btn_delete_task"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/black"
+                    android:text="Delete"
+                    android:textColor="@android:color/white"
+                    android:padding="12dp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- Section 2: Assign Task -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="@color/white"
+            android:layout_marginBottom="32dp">
+
+            <!-- Section Title -->
+            <TextView
+                android:id="@+id/text_assign_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Assign Task"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Select Individual -->
+            <TextView
+                android:id="@+id/text_select_individual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Assign to"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_below="@id/text_assign_task"
+                android:layout_marginTop="16dp" />
+
+            <Spinner
+                android:id="@+id/spinner_select_individual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_select_individual"
+                android:layout_marginTop="8dp" />
+
+            <!-- Save Task Button -->
+            <Button
+                android:id="@+id/btn_save_task"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spinner_select_individual"
+                android:layout_marginTop="32dp"
+                android:backgroundTint="@color/black"
+                android:text="Save Task"
+                android:textColor="@android:color/white"
+                android:padding="12dp" />
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>
