@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/neutral"
+    android:padding="16dp">
+
+    <!-- Title: Manage your tasks -->
+
+    <!-- Image: Tasks -->
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="238dp"
+        android:layout_height="76dp"
+        android:layout_below="@id/text_title"
+        android:text="Manage your tasks"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <!-- Container for Task Name, Duration, Category, and Add Button -->
+    <ImageView
+        android:id="@+id/image_tasks"
+        android:layout_width="140dp"
+        android:layout_height="125dp"
+        android:layout_marginStart="270dp"
+        android:layout_marginTop="15dp"
+        android:contentDescription="Tasks"
+        android:src="@drawable/tasks" />
+
+    <RelativeLayout
+        android:id="@+id/task_info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_tasks"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        android:padding="16dp">
+
+        <!-- Task Name -->
+        <TextView
+            android:id="@+id/text_task_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task Name"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edit_task_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_task_name"
+            android:layout_marginTop="8dp"
+
+            android:hint="Enter task name"
+            android:padding="8dp" />
+
+        <!-- Duration -->
+        <TextView
+            android:id="@+id/text_duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_task_name"
+            android:layout_marginTop="16dp"
+            android:text="Duration (in minutes)"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edit_duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_duration"
+            android:layout_marginTop="8dp"
+
+            android:hint="Enter duration"
+            android:padding="8dp" />
+
+        <!-- Category -->
+        <TextView
+            android:id="@+id/text_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/edit_duration"
+            android:layout_marginTop="16dp"
+            android:text="Category"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spinner_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_category"
+            android:layout_marginTop="8dp" />
+
+        <!-- Add Task Button -->
+        <Button
+            android:id="@+id/btn_add_task"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spinner_category"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/black"
+            android:text="Add Task" />
+
+    </RelativeLayout>
+
+    <!-- Status Image -->
+    <ImageView
+        android:id="@+id/image_status"
+        android:layout_width="wrap_content"
+        android:layout_height="105dp"
+        android:layout_below="@id/task_info_layout"
+        android:layout_marginTop="16dp"
+        android:contentDescription="Status"
+        android:src="@drawable/status" />
+
+    <!-- Buttons for Viewing Tasks -->
+    <LinearLayout
+        android:id="@+id/buttons_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_status"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_view_completed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/black"
+            android:text="Update"/>
+
+        <Button
+            android:id="@+id/btn_view_inprogress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/black"
+            android:text="Delete"/>
+
+        <Button
+            android:id="@+id/btn_view_todo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/black"
+            android:text="View"/>
+    </LinearLayout>
+
+</RelativeLayout>

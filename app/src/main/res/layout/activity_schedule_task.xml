@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/neutral">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Page Title -->
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Schedule Task"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Task Name -->
+        <TextView
+            android:id="@+id/text_task_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task Name"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_below="@id/text_title"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/edit_task_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_task_name"
+            android:layout_marginTop="8dp"
+            android:hint="Enter task name"
+            android:padding="8dp"
+            android:background="@drawable/edittext_background" />
+
+        <!-- Task Description -->
+        <TextView
+            android:id="@+id/text_task_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task Description"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_below="@id/edit_task_name"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/edit_task_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_task_description"
+            android:layout_marginTop="8dp"
+            android:hint="Enter task description"
+            android:padding="8dp"
+            android:background="@drawable/edittext_background" />
+
+        <!-- Task Date -->
+        <TextView
+            android:id="@+id/text_task_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task Date"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_below="@id/edit_task_description"
+            android:layout_marginTop="16dp" />
+
+        <DatePicker
+            android:id="@+id/date_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_task_date"
+            android:layout_marginTop="8dp" />
+
+        <!-- Task Time -->
+        <TextView
+            android:id="@+id/text_task_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Task Time"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_below="@id/date_picker"
+            android:layout_marginTop="16dp" />
+
+        <TimePicker
+            android:id="@+id/time_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_task_time"
+            android:layout_marginTop="8dp"
+            android:timePickerMode="spinner" />
+
+        <!-- Save Task Button -->
+        <Button
+            android:id="@+id/btn_save_task"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/time_picker"
+            android:layout_marginTop="32dp"
+            android:backgroundTint="@color/black"
+            android:text="Save Task"
+            android:textColor="@android:color/white"
+            android:padding="12dp"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+</ScrollView>
