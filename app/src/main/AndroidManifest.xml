@@ -38,6 +38,7 @@
         </activity>
         <activity android:name=".ScheduleTaskActivity" />
         <activity android:name=".AssignTaskActivity" />
+        <activity android:name=".RegisterActivity" />
 
 
         <meta-data

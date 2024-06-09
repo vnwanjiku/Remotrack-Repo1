@@ -17,7 +17,7 @@ public class LandpageActivity extends AppCompatActivity {
         btn_get_started.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LandpageActivity.this, MainActivity.class);
+                Intent intent = new Intent(LandpageActivity.this, MainUserLogin.class);
                 startActivity(intent);
             }
         });
