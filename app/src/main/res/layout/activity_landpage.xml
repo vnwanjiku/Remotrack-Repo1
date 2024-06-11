@@ -5,87 +5,83 @@
     android:background="@color/neutral"
     android:padding="16dp">
 
-    <!-- Logo and Title Container -->
-    <RelativeLayout
-        android:id="@+id/header_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal">
+    <ImageView
+        android:id="@+id/assisremote"
+        android:layout_width="350dp"
+        android:layout_height="120dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="160dp"
+        android:src="@drawable/remotrack" />
 
-        <!-- Logo Image -->
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginLeft="100dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cloud1" />
 
-        <!-- REMOTRACK Title -->
-        <ImageView
-            android:id="@+id/image_logo"
-            android:layout_width="167dp"
-            android:layout_height="98dp"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="-42dp"
-            android:layout_marginEnd="16dp"
-            android:contentDescription="Logo"
-            android:src="@drawable/logo" />
 
-        <TextView
-            android:id="@+id/text_title"
-            android:layout_width="239dp"
-            android:layout_height="52dp"
-            android:layout_alignBottom="@id/image_logo"
-            android:layout_marginStart="-18dp"
-            android:layout_marginBottom="33dp"
-            android:layout_toEndOf="@id/image_logo"
-            android:text="REMOTRACK"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
-
-    <!-- Container for Remote Image with Black Background and Border -->
-    <RelativeLayout
-        android:id="@+id/remote_image_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/header_container"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@color/black"
-        android:padding="16dp"
-        android:layout_marginBottom="20dp">
-
-        <!-- Remote Image -->
-        <ImageView
-            android:id="@+id/image_remote"
-            android:layout_width="355dp"
-            android:layout_height="184dp"
-            android:contentDescription="Remote"
-            android:scaleType="fitCenter"
-            android:src="@drawable/remote" />
-    </RelativeLayout>
-
-    <!-- Description Text -->
-
-    <!-- Get Started Button with Image -->
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cloud2" />
 
     <TextView
-        android:id="@+id/text_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/remote_image_container"
-        android:layout_marginTop="13dp"
-        android:padding="16dp"
-        android:text="Remote work has been made easier with Remotrack. With a click of a button, you are able to track your tasks, complete them on time, and enhance your productivity. Get Started on Remotrack today."
-        android:textAlignment="center"
-        android:textSize="18sp" />
-
-    <ImageButton
-        android:id="@+id/btn_get_started"
         android:layout_width="wrap_content"
-        android:layout_height="171dp"
-        android:layout_below="@id/text_description"
-        android:layout_marginTop="1dp"
-        android:background="@android:color/transparent"
-        android:contentDescription="Get Started"
-        android:src="@drawable/getstarted" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="98dp"
+        android:layout_marginTop="360dp"
+        android:fontFamily="sans-serif"
+        android:text="Welcome to RemoTrack"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="9dp"
+        android:layout_marginTop="380dp"
+        android:fontFamily="sans-serif"
+        android:text="Get Ready to Transform Your Remote Work Experience"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/getstarted_button"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="410dp"
+        android:backgroundTint="@color/dark"
+        android:text="Get Started"
+        android:textColor="@android:color/white" />
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="290dp"
+        android:layout_marginLeft="55dp"
+        android:layout_marginTop="500dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cloudcomputing" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/work" />
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="500dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/computer" />
 
 </RelativeLayout>

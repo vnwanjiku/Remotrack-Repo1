@@ -135,7 +135,7 @@
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Add more cards here if needed -->
+
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/card5"
                         style="?attr/materialCardViewFilledStyle"
@@ -190,7 +190,7 @@
             </com.google.android.material.card.MaterialCardView>
 
 
-            <!-- Vertical items -->
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
