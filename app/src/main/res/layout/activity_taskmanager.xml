@@ -6,19 +6,15 @@
     android:padding="16dp">
 
     <!-- Title: Manage your tasks -->
-
-    <!-- Image: Tasks -->
-
     <TextView
         android:id="@+id/text_title"
         android:layout_width="238dp"
         android:layout_height="76dp"
-        android:layout_below="@id/text_title"
         android:text="Manage your tasks"
         android:textSize="24sp"
         android:textStyle="bold" />
 
-    <!-- Container for Task Name, Duration, Category, and Add Button -->
+    <!-- Image: Tasks -->
     <ImageView
         android:id="@+id/image_tasks"
         android:layout_width="140dp"
@@ -28,6 +24,7 @@
         android:contentDescription="Tasks"
         android:src="@drawable/tasks" />
 
+    <!-- Container for Task Name, Duration, Category, and Add Button -->
     <RelativeLayout
         android:id="@+id/task_info_layout"
         android:layout_width="match_parent"
@@ -52,7 +49,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/text_task_name"
             android:layout_marginTop="8dp"
-
             android:hint="Enter task name"
             android:padding="8dp" />
 
@@ -73,7 +69,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/text_duration"
             android:layout_marginTop="8dp"
-
             android:hint="Enter duration"
             android:padding="8dp" />
 
