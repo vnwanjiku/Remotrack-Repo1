@@ -1,24 +1,25 @@
 package com.example.remoteapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-public class MainActivity extends AppCompatActivity {
+public class Adminreports extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_admin_reports);
 
         ImageView leftArrow = findViewById(R.id.left_arrow);
         leftArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Start MainUserLogin activity
-                Intent intent = new Intent(MainActivity.this, MainUserLogin.class);
+                Intent intent = new Intent(Adminreports.this, MainUserLogin.class);
                 startActivity(intent);
             }
         });
@@ -28,17 +29,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start TaskManager activity
-                Intent intent = new Intent(MainActivity.this, TaskManager.class);
+                Intent intent = new Intent(Adminreports.this, AssignTaskActivity.class);
                 startActivity(intent);
             }
         });
 
-        ImageView calendar = findViewById(R.id.calendar);
-        calendar.setOnClickListener(new View.OnClickListener() {
+        ImageView barchart = findViewById(R.id.barchart);
+        barchart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Start TaskManager activity
-                Intent intent = new Intent(MainActivity.this, ScheduleTaskActivity.class);
+                Intent intent = new Intent(Adminreports.this, Adminreports.class);
                 startActivity(intent);
             }
         });
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start TaskManager activity
-                Intent intent = new Intent(MainActivity.this, Notification.class);
+                Intent intent = new Intent(Adminreports.this, Notification.class);
                 startActivity(intent);
             }
         });
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start TaskManager activity
-                Intent intent = new Intent(MainActivity.this, Profile.class);
+                Intent intent = new Intent(Adminreports.this, Profile.class);
                 startActivity(intent);
             }
         });

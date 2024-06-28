@@ -12,34 +12,42 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RemoteApplication"
         tools:targetApi="31">
-
+        <activity
+            android:name=".Adminreports"
+            android:exported="false" />
+        <activity
+            android:name=".Profile"
+            android:exported="false" />
+        <activity
+            android:name=".Notification"
+            android:exported="false" />
+        <activity
+            android:name=".Admin"
+            android:exported="false" />
         <activity
             android:name=".MainUserLogin"
             android:exported="false" />
-
         <activity
             android:name=".TaskManager"
             android:exported="false"
             android:label="@string/title_activity_main_login"
             android:theme="@style/Theme.RemoteApplication" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true" />
-
         <activity
             android:name=".LandpageActivity"
             android:exported="true"
             android:theme="@style/Theme.RemoteApplication">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".ScheduleTaskActivity" />
         <activity android:name=".AssignTaskActivity" />
         <activity android:name=".RegisterActivity" />
-
 
         <meta-data
             android:name="preloaded_fonts"

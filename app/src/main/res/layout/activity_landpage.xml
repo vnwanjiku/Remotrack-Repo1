@@ -10,15 +10,15 @@
         android:layout_width="350dp"
         android:layout_height="120dp"
         android:layout_marginLeft="0dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="170dp"
         android:src="@drawable/remotrack" />
 
     <ImageView
         android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_height="240dp"
         android:layout_marginLeft="100dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/cloud1" />
+        android:src="@drawable/threecloud" />
 
 
     <ImageView
@@ -63,24 +63,24 @@
     <ImageView
         android:layout_width="300dp"
         android:layout_height="290dp"
-        android:layout_marginLeft="55dp"
+        android:layout_marginLeft="60dp"
         android:layout_marginTop="500dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/cloudcomputing" />
+        android:src="@drawable/twocloud" />
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="0dp"
         android:scaleType="centerCrop"
         android:src="@drawable/work" />
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="500dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="490dp"
         android:scaleType="centerCrop"
         android:src="@drawable/computer" />
 

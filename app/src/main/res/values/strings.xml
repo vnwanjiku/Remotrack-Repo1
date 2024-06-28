@@ -43,13 +43,13 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
-        <!-- Other strings -->
-        <string-array name="task_categories">
-            <item>Work</item>
-            <item>Personal</item>
-            <item>Shopping</item>
-            <item>Fitness</item>
-            <item>Other</item>
-        </string-array>
+    <!-- Other strings -->
+    <string-array name="task_categories">
+        <item>Work</item>
+        <item>Personal</item>
+        <item>Shopping</item>
+        <item>Fitness</item>
+        <item>Other</item>
+    </string-array>
 
 </resources>
