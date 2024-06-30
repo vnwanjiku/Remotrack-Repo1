@@ -7,19 +7,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-public class Admin extends AppCompatActivity {
+public class Adminprofile extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin);
+        setContentView(R.layout.activity_adminprofile);
 
         ImageView leftArrow = findViewById(R.id.left_arrow);
         leftArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Start MainUserLogin activity
-                Intent intent = new Intent(Admin.this, MainUserLogin.class);
+                Intent intent = new Intent(Adminprofile.this, MainUserLogin.class);
                 startActivity(intent);
             }
         });
@@ -29,7 +29,7 @@ public class Admin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start TaskManager activity
-                Intent intent = new Intent(Admin.this, AssignTaskActivity.class);
+                Intent intent = new Intent(Adminprofile.this, AssignTaskActivity.class);
                 startActivity(intent);
             }
         });
@@ -39,7 +39,7 @@ public class Admin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start TaskManager activity
-                Intent intent = new Intent(Admin.this, Adminreports.class);
+                Intent intent = new Intent(Adminprofile.this, Adminreports.class);
                 startActivity(intent);
             }
         });
@@ -49,7 +49,7 @@ public class Admin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start TaskManager activity
-                Intent intent = new Intent(Admin.this, Adminnotifications.class);
+                Intent intent = new Intent(Adminprofile.this, Adminnotifications.class);
                 startActivity(intent);
             }
         });
@@ -59,7 +59,7 @@ public class Admin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start TaskManager activity
-                Intent intent = new Intent(Admin.this, Adminprofile.class);
+                Intent intent = new Intent(Adminprofile.this, Adminprofile.class);
                 startActivity(intent);
             }
         });

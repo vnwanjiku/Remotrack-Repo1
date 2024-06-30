@@ -49,7 +49,7 @@ public class Adminreports extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start TaskManager activity
-                Intent intent = new Intent(Adminreports.this, Notification.class);
+                Intent intent = new Intent(Adminreports.this, Adminnotifications.class);
                 startActivity(intent);
             }
         });
@@ -59,7 +59,7 @@ public class Adminreports extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start TaskManager activity
-                Intent intent = new Intent(Adminreports.this, Profile.class);
+                Intent intent = new Intent(Adminreports.this, Adminprofile.class);
                 startActivity(intent);
             }
         });

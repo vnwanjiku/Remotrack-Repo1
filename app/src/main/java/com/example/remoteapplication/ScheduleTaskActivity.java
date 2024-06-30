@@ -1,11 +1,13 @@
 package com.example.remoteapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -37,6 +39,56 @@ public class ScheduleTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 saveTask();
+            }
+        });
+
+        ImageView leftArrow = findViewById(R.id.left_arrow);
+        leftArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start MainUserLogin activity
+                Intent intent = new Intent(ScheduleTaskActivity.this, MainUserLogin.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageView task = findViewById(R.id.task);
+        task.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start TaskManager activity
+                Intent intent = new Intent(ScheduleTaskActivity.this, TaskManager.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageView calendar = findViewById(R.id.calendar);
+        calendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start ScheduleTaskActivity activity
+                Intent intent = new Intent(ScheduleTaskActivity.this, ScheduleTaskActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageView bell = findViewById(R.id.bell);
+        bell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start Notification activity
+                Intent intent = new Intent(ScheduleTaskActivity.this, Notification.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageView user = findViewById(R.id.user);
+        user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start Profile activity
+                Intent intent = new Intent(ScheduleTaskActivity.this, Profile.class);
+                startActivity(intent);
             }
         });
     }
