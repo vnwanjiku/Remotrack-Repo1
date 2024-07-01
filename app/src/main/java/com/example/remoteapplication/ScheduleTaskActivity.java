@@ -47,7 +47,7 @@ public class ScheduleTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start MainUserLogin activity
-                Intent intent = new Intent(ScheduleTaskActivity.this, MainUserLogin.class);
+                Intent intent = new Intent(ScheduleTaskActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });

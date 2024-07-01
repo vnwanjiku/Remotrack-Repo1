@@ -20,7 +20,7 @@ public class Adminnotifications extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start MainUserLogin activity
-                Intent intent = new Intent(Adminnotifications.this, MainUserLogin.class);
+                Intent intent = new Intent(Adminnotifications.this, Admin.class);
                 startActivity(intent);
             }
         });

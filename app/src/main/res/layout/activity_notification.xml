@@ -51,38 +51,94 @@
         android:layout_height="542dp"
         android:layout_marginTop="131dp">
 
-        <!-- Notification Form -->
-        <LinearLayout
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="match_parent"
+            tools:context=".AdminNotificationsActivity">
 
-            <EditText
-                android:id="@+id/editTextTitle"
+            <!-- Recipient selection -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Title"/>
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:background="@android:color/white"
+                android:elevation="4dp"
+                android:id="@+id/recipientLayout"
+                android:layout_alignParentTop="true">
 
-            <EditText
-                android:id="@+id/editTextMessage"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Send to:"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Select Recipient">
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/spinnerRecipients"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <!-- Messages list -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewMessages"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_below="@id/recipientLayout"
+                android:layout_above="@+id/messageInputLayout"
+                android:padding="8dp"
+                android:clipToPadding="false"
+                android:scrollbars="vertical"/>
+
+            <!-- Message input layout -->
+            <LinearLayout
+                android:id="@+id/messageInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Message"/>
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:background="@android:color/white"
+                android:elevation="4dp">
 
-            <EditText
-                android:id="@+id/editTextRecipient"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Recipient (leave blank to send to all)"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Type a message">
 
-            <Button
-                android:id="@+id/buttonSend"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Send Notification"/>
-        </LinearLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonSend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:icon="@drawable/send"
+
+                    android:text="Send"
+                    android:backgroundTint="@color/design_default_color_primary"/>
+            </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
+
+
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card2"
@@ -90,8 +146,7 @@
         android:layout_width="420dp"
         android:layout_height="150dp"
         android:layout_marginTop="675dp"
-        app:cardBackgroundColor="@color/neutral
-">
+        app:cardBackgroundColor="@color/neutral">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -114,7 +169,7 @@
                 android:layout_marginLeft="55dp"
                 android:layout_marginTop="15dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/barchart"/>
+                app:srcCompat="@drawable/calendar"/>
 
             <ImageView
                 android:id="@+id/bell"

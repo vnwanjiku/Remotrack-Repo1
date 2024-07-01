@@ -19,7 +19,7 @@ public class Adminreports extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start MainUserLogin activity
-                Intent intent = new Intent(Adminreports.this, MainUserLogin.class);
+                Intent intent = new Intent(Adminreports.this, Admin.class);
                 startActivity(intent);
             }
         });

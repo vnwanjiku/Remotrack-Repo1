@@ -90,7 +90,7 @@ public class AssignTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start MainUserLogin activity
-                Intent intent = new Intent(AssignTaskActivity.this, MainUserLogin.class);
+                Intent intent = new Intent(AssignTaskActivity.this, Admin.class);
                 startActivity(intent);
             }
         });

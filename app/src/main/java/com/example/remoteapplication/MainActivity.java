@@ -19,12 +19,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
 
     private MaterialCardView card3, card4, card5;
-    private TextView taskTextView3, taskTextView4, taskTextView5;
+    private TextView taskTextView3, taskTextView4, taskTextView5, userrealname, userrealtime;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabaseTasks;
+    private DatabaseReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,14 @@ public class MainActivity extends AppCompatActivity {
         taskTextView3 = findViewById(R.id.task_text_view_3);
         taskTextView4 = findViewById(R.id.task_text_view_4);
         taskTextView5 = findViewById(R.id.task_text_view_5);
+
+        userrealname = findViewById(R.id.userrealname);
+        userrealtime = findViewById(R.id.userrealtime);
+
+
+        fetchUserName();
+
+        setGreetingMessage();
 
         ImageView leftArrow = findViewById(R.id.left_arrow);
         leftArrow.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +105,54 @@ public class MainActivity extends AppCompatActivity {
 
         loadUserTasks();
     }
+
+    private void fetchUserName() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            String uid = currentUser.getUid();
+            userRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        String firstName = dataSnapshot.child("firstName").getValue(String.class);
+
+                        if (firstName != null ) {
+                            userrealname.setText(firstName);
+                        } else {
+                            userrealname.setText("Welcome");
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    userrealname.setText("Welcome");
+                }
+            });
+        } else {
+            // No user is signed in, handle this case if needed
+            // For example, redirect to login screen
+            Intent intent = new Intent(MainActivity.this, MainUserLogin.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    private void setGreetingMessage() {
+        Calendar calendar = Calendar.getInstance();
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+        String timeOfDay;
+        if (hourOfDay >= 0 && hourOfDay < 12) {
+            timeOfDay = "Morning,";
+        } else if (hourOfDay >= 12 && hourOfDay < 17) {
+            timeOfDay = "Afternoon,";
+        } else {
+            timeOfDay = "Evening,";
+        }
+        userrealtime.setText(timeOfDay);
+    }
+
 
     private void loadUserTasks() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
