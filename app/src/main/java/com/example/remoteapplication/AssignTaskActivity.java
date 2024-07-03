@@ -2,7 +2,6 @@ package com.example.remoteapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +32,8 @@ public class AssignTaskActivity extends AppCompatActivity {
     private Spinner spinnerSelectIndividual;
     private Button btnAddTask, btnUpdateTask, btnDeleteTask, btnSaveTask;
     private DatabaseReference mDatabaseUsers, mDatabaseTasks;
+    private FirebaseAuth mAuth;
+    private String currentUserOrganization;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +50,10 @@ public class AssignTaskActivity extends AppCompatActivity {
         btnSaveTask = findViewById(R.id.btn_save_task);
 
         // Initialize Firebase Database references
-        mDatabaseUsers = FirebaseDatabase.getInstance().getReference("users");
-        mDatabaseTasks = FirebaseDatabase.getInstance().getReference("tasks");
+        mAuth = FirebaseAuth.getInstance();
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference("organization");
 
-        // Populate spinner with users
-        populateUserSpinner();
+        fetchCurrentUserOrganization();
 
         btnAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,8 +137,36 @@ public class AssignTaskActivity extends AppCompatActivity {
         });
     }
 
+    private void fetchCurrentUserOrganization() {
+        String uid = mAuth.getCurrentUser().getUid();
+        DatabaseReference userRef = mDatabaseUsers;
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot organizationSnapshot : snapshot.getChildren()) {
+                    if (organizationSnapshot.child("users").hasChild(uid)) {
+                        currentUserOrganization = organizationSnapshot.getKey();
+                        mDatabaseTasks = mDatabaseUsers.child(currentUserOrganization).child("tasks");
+                        populateUserSpinner();
+                        break;
+                    }
+                }
+                if (currentUserOrganization == null) {
+                    Toast.makeText(AssignTaskActivity.this, "Organization not found for current user", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AssignTaskActivity.this, "Failed to get organization: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void populateUserSpinner() {
-        mDatabaseUsers.addValueEventListener(new ValueEventListener() {
+        DatabaseReference usersRef = mDatabaseUsers.child(currentUserOrganization).child("users");
+        usersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<String> users = new ArrayList<>();

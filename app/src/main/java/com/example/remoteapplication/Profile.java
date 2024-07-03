@@ -100,24 +100,34 @@ public class Profile extends AppCompatActivity {
         }
 
         String userId = currentUser.getUid();
-        mDatabaseUsers.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("organization");
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    String firstName = snapshot.child("firstName").getValue(String.class);
-                    String lastName = snapshot.child("lastName").getValue(String.class);
-                    String email = snapshot.child("email").getValue(String.class);
-                    String organization = snapshot.child("organization").getValue(String.class);
-                    String role = snapshot.child("role").getValue(String.class);
+                for (DataSnapshot orgSnapshot : snapshot.getChildren()) {
+                    DataSnapshot usersNode = orgSnapshot.child("users");
+                    if (usersNode.hasChild(userId)) {
+                        DataSnapshot userSnapshot = usersNode.child(userId);
 
+                        // Retrieve user detailsedwin
+                        String firstName = userSnapshot.child("firstName").getValue(String.class);
+                        String lastName = userSnapshot.child("lastName").getValue(String.class);
+                        String email = currentUser.getEmail(); // Use FirebaseUser's email
+                        String organization = orgSnapshot.getKey(); // Get organization name
 
-                    textinfoname1.setText(firstName + " " + lastName);
-                    textinfoname2.setText(email);
-                    textinfoname3.setText(organization);
-                    textinfoname4.setText(role);
-                } else {
-                    Toast.makeText(Profile.this, "User data not found", Toast.LENGTH_SHORT).show();
+                        // Display user details in UI
+                        textinfoname1.setText(firstName + " " + lastName);
+                        textinfoname2.setText(email);
+                        textinfoname3.setText(organization);
+                        textinfoname4.setText("User"); // Assuming it's fixed for admins
+
+                        return; // Exit loop after finding the user
+                    }
                 }
+
+                // Handle case where user data is not found
+                Toast.makeText(Profile.this, "User data not found", Toast.LENGTH_SHORT).show();
             }
 
             @Override

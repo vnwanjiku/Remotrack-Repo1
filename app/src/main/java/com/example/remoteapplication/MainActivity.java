@@ -1,10 +1,13 @@
 package com.example.remoteapplication;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private MaterialCardView card3, card4, card5;
     private TextView taskTextView3, taskTextView4, taskTextView5, userrealname, userrealtime;
     private FirebaseAuth mAuth;
-    private DatabaseReference mDatabaseTasks;
-    private DatabaseReference userRef;
+    private DatabaseReference mDatabaseUsers, mDatabaseTasks;
+    private String currentUserOrganization;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
-        mDatabaseTasks = FirebaseDatabase.getInstance().getReference("tasks");
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference("organization");
 
         card3 = findViewById(R.id.card3);
         card4 = findViewById(R.id.card4);
@@ -48,8 +51,7 @@ public class MainActivity extends AppCompatActivity {
         userrealname = findViewById(R.id.userrealname);
         userrealtime = findViewById(R.id.userrealtime);
 
-
-        fetchUserName();
+        fetchCurrentUserOrganization();
 
         setGreetingMessage();
 
@@ -102,32 +104,64 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
-        loadUserTasks();
+    private void fetchCurrentUserOrganization() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(MainActivity.this, "No user logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String uid = currentUser.getUid();
+        DatabaseReference userRef = mDatabaseUsers;
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot organizationSnapshot : snapshot.getChildren()) {
+                    if (organizationSnapshot.child("users").hasChild(uid)) {
+                        currentUserOrganization = organizationSnapshot.getKey();
+                        mDatabaseTasks = mDatabaseUsers.child(currentUserOrganization).child("tasks");
+                        fetchUserName();
+                        loadUserTasks();
+                        break;
+                    }
+                }
+                if (currentUserOrganization == null) {
+                    Toast.makeText(MainActivity.this, "Organization not found for current user", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Failed to get organization: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void fetchUserName() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             String uid = currentUser.getUid();
-            userRef = FirebaseDatabase.getInstance().getReference("users").child(uid);
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("organization").child(currentUserOrganization).child("users").child(uid);
+
             userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        String firstName = dataSnapshot.child("firstName").getValue(String.class);
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String firstName = snapshot.child("firstName").getValue(String.class);
 
-                        if (firstName != null ) {
-                            userrealname.setText(firstName);
-                        } else {
-                            userrealname.setText("Welcome");
-                        }
+                    if (firstName != null) {
+                        userrealname.setText(firstName);
+                    } else {
+                        userrealname.setText("Welcome");
                     }
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                public void onCancelled(@NonNull DatabaseError error) {
                     userrealname.setText("Welcome");
+                    Log.e(TAG, "Failed to get user data: " + error.getMessage());
                 }
             });
         } else {
@@ -152,7 +186,6 @@ public class MainActivity extends AppCompatActivity {
         }
         userrealtime.setText(timeOfDay);
     }
-
 
     private void loadUserTasks() {
         FirebaseUser currentUser = mAuth.getCurrentUser();

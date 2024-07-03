@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import android.util.Log;
 
 public class MainUserLogin extends AppCompatActivity {
 
@@ -28,6 +29,7 @@ public class MainUserLogin extends AppCompatActivity {
     private Button registerButton;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
+    private static final String TAG = "MainUserLogin";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class MainUserLogin extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         // Initialize Firebase Database reference
-        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        mDatabase = FirebaseDatabase.getInstance().getReference("organization");
 
         // Set an OnClickListener on the login button
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -97,25 +99,62 @@ public class MainUserLogin extends AppCompatActivity {
                             // Sign in success, get the user's UID
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
-                                checkUserRole(user.getUid());
+                                Log.d(TAG, "Login successful, fetching user organization");
+                                fetchUserOrganization(user.getUid());
                             } else {
+                                Log.e(TAG, "Failed to get user information");
                                 Toast.makeText(MainUserLogin.this, "Failed to get user information", Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             // If sign in fails, display a message to the user.
+                            Log.e(TAG, "Authentication failed: " + task.getException().getMessage());
                             Toast.makeText(MainUserLogin.this, "Authentication failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    private void checkUserRole(String uid) {
-        mDatabase.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void fetchUserOrganization(String uid) {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("organization");
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot orgSnapshot : snapshot.getChildren()) {
+                    DataSnapshot usersSnapshot = orgSnapshot.child("users");
+                    if (usersSnapshot.child(uid).exists()) {
+                        String organization = orgSnapshot.getKey(); // Get the organization name
+                        if (organization != null) {
+                            Log.d(TAG, "Organization found: " + organization);
+                            checkUserRole(uid, organization);
+                            return; // Exit loop once organization is found
+                        }
+                    }
+                }
+                Log.e(TAG, "Organization not found for user");
+                Toast.makeText(MainUserLogin.this, "Organization not found", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Failed to get organization: " + error.getMessage());
+                Toast.makeText(MainUserLogin.this, "Failed to get organization: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void checkUserRole(String uid, String organization) {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("organization")
+                .child("Remo").child("users").child(uid);
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     String role = snapshot.child("role").getValue(String.class);
                     if (role != null) {
+                        Log.d(TAG, "Role found: " + role);
                         if (role.equals("admin")) {
                             // Navigate to Admin activity
                             Intent intent = new Intent(MainUserLogin.this, Admin.class);
@@ -128,15 +167,18 @@ public class MainUserLogin extends AppCompatActivity {
                             finish();
                         }
                     } else {
+                        Log.e(TAG, "Role not found");
                         Toast.makeText(MainUserLogin.this, "Role not found", Toast.LENGTH_SHORT).show();
                     }
                 } else {
+                    Log.e(TAG, "User data not found in organization");
                     Toast.makeText(MainUserLogin.this, "User data not found", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Failed to get role: " + error.getMessage());
                 Toast.makeText(MainUserLogin.this, "Failed to get role: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
