@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -46,43 +47,73 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="542dp"
-        android:layout_marginTop="131dp">
+        android:layout_marginTop="130dp"
+        android:layout_height="543dp"
+        tools:context=".AdminNotificationsActivity">
 
-        <!-- Notification Form -->
-        <LinearLayout
+        <!-- Spinner for selecting recipient -->
+        <Spinner
+            android:id="@+id/spinnerRecipients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/inputsquare"
+            android:padding="8dp"
+            android:spinnerMode="dropdown" />
 
-            <EditText
-                android:id="@+id/editTextTitle"
-                android:layout_width="match_parent"
+        <!-- Chat bubbles -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMessages"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@id/spinnerRecipients"
+            android:layout_above="@id/messageInputLayout"
+            android:padding="8dp"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"/>
+
+        <!-- Message input layout -->
+        <LinearLayout
+            android:id="@+id/messageInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:background="@android:color/white"
+            android:elevation="4dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Title"/>
+                android:layout_weight="1"
+                android:hint="Type a message">
 
-            <EditText
-                android:id="@+id/editTextMessage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Message"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/editTextRecipient"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Recipient (leave blank to send to all)"/>
-
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonSend"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Send Notification"/>
+                android:layout_marginStart="8dp"
+                android:icon="@drawable/send"
+
+                android:text="Send"
+                android:backgroundTint="@color/design_default_color_primary"/>
         </LinearLayout>
-    </ScrollView>
+
+    </RelativeLayout>
+
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card2"
