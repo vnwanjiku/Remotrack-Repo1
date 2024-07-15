@@ -158,8 +158,7 @@ public class RegisterUser extends AppCompatActivity {
                     Toast.makeText(RegisterUser.this, "User registered successfully", Toast.LENGTH_SHORT).show();
 
                     // Navigate to MainActivity after successful registration
-                    Intent intent = new Intent(RegisterUser.this, Admin.class);
-                    startActivity(intent);
+
 
                     // Optionally, finish this activity to remove it from the back stack
                     finish();

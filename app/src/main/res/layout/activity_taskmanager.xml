@@ -56,10 +56,12 @@
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="542dp"
-    android:layout_marginTop="115dp"
+    android:layout_height="564dp"
+    android:layout_marginTop="110dp"
     android:background="@color/neutral"
     android:padding="3dp">
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -87,8 +89,8 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/edit_task_name"
+            <Spinner
+                android:id="@+id/spinner_task_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_task_name"
@@ -98,62 +100,73 @@
 
             <!-- Duration -->
             <TextView
+                android:id="@+id/text_task_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/spinner_task_name"
+                android:layout_marginTop="16dp"
+                android:text="Task Description"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spinner_task_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_task_description"
+                android:layout_marginTop="8dp"
+                android:padding="8dp" />
+
+            <!-- Category -->
+            <TextView
                 android:id="@+id/text_duration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/edit_task_name"
+                android:layout_below="@id/spinner_task_description"
                 android:layout_marginTop="16dp"
                 android:text="Duration (in minutes)"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/edit_duration"
+            <TextView
+                android:id="@+id/text_duration_picker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_duration"
                 android:layout_marginTop="8dp"
-                android:hint="Enter duration"
-                android:padding="8dp" />
-
-            <!-- Category -->
-            <TextView
-                android:id="@+id/text_category"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/edit_duration"
-                android:layout_marginTop="16dp"
-                android:text="Category"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/spinner_category"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_category"
-                android:layout_marginTop="8dp" />
-
+                android:text="Select Duration"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:clickable="true" />
             <!-- Add Task Button -->
-            <Button
-                android:id="@+id/btn_add_task"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/spinner_category"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/black"
-                android:text="Add Task" />
+
+
+
 
         </RelativeLayout>
 
         <!-- Status Image -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <ImageView
-            android:id="@+id/image_status"
-            android:layout_width="wrap_content"
+            android:layout_marginLeft="45dp"
+            android:layout_width="100dp"
             android:layout_height="105dp"
             android:layout_marginTop="16dp"
             android:contentDescription="Status"
-            android:src="@drawable/status" />
+            android:src="@drawable/shuttle" />
+
+        <ImageView
+            android:layout_marginLeft="235dp"
+            android:layout_width="100dp"
+            android:layout_height="105dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="Status"
+            android:src="@drawable/gears" />
+
+        </RelativeLayout>
 
         <!-- Buttons for Viewing Tasks -->
         <LinearLayout
@@ -164,12 +177,12 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_view_completed"
+                android:id="@+id/btn_view_started"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/black"
-                android:text="Update"/>
+                android:text="Started"/>
 
             <Button
                 android:id="@+id/btn_view_inprogress"
@@ -177,16 +190,57 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/black"
-                android:text="Delete"/>
+                android:text="In Progress"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_marginLeft="45dp"
+                android:layout_width="100dp"
+                android:layout_height="105dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="Status"
+                android:src="@drawable/time" />
+
+            <ImageView
+                android:layout_marginLeft="235dp"
+                android:layout_width="100dp"
+                android:layout_height="105dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="Status"
+                android:src="@drawable/file" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/buttons_layout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_view_todo"
+                android:id="@+id/btn_view_pending"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/black"
-                android:text="View"/>
+                android:text="Pending"/>
+
+            <Button
+                android:id="@+id/btn_view_complete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/black"
+                android:text="Complete"/>
         </LinearLayout>
+
+
 
     </LinearLayout>
 </ScrollView>

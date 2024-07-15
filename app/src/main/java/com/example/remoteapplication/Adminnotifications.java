@@ -40,6 +40,7 @@ public class Adminnotifications extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private String organizationName;
     private List<String> userList;
+    private ValueEventListener messagesEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +68,11 @@ public class Adminnotifications extends AppCompatActivity {
             String receiverId = spinnerRecipients.getSelectedItem().toString();
 
             if (!messageText.isEmpty()) {
-                sendMessage(messageText, senderId, senderName, receiverId);
+                if ("All".equals(receiverId)) {
+                    sendMessageToAll(messageText, senderId, senderName);
+                } else {
+                    sendMessage(messageText, senderId, senderName, receiverId);
+                }
                 editTextMessage.setText("");
             }
         });
@@ -86,7 +91,6 @@ public class Adminnotifications extends AppCompatActivity {
 
         ImageView user = findViewById(R.id.user);
         user.setOnClickListener(v -> startActivity(new Intent(Adminnotifications.this, Adminprofile.class)));
-
     }
 
     private void fetchOrganizationNameAndUsers() {
@@ -123,6 +127,7 @@ public class Adminnotifications extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ArrayList<String> userList = new ArrayList<>();
+                userList.add("All"); // Add "All" as the first option
 
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     String email = userSnapshot.child("email").getValue(String.class);
@@ -166,7 +171,6 @@ public class Adminnotifications extends AppCompatActivity {
         });
     }
 
-
     private void sendMessage(String messageText, String senderId, String senderName, String receiverId) {
         DatabaseReference notificationsRef = FirebaseDatabase.getInstance().getReference()
                 .child("organization")
@@ -180,29 +184,55 @@ public class Adminnotifications extends AppCompatActivity {
         notificationsRef.child(messageId).setValue(message)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Notification", "Message sent successfully");
-                    editTextMessage.setText("");
-                    loadChatMessages(senderId, receiverId); // Update with Firebase IDs
+                    // Append the new message to the message list
+                    messageList.add(message);
+                    messageAdapter.notifyItemInserted(messageList.size() - 1);
+                    recyclerViewMessages.scrollToPosition(messageList.size() - 1);
                 })
                 .addOnFailureListener(e -> Log.e("Notification", "Failed to send message", e));
     }
 
+    private void sendMessageToAll(String messageText, String senderId, String senderName) {
+        DatabaseReference notificationsRef = FirebaseDatabase.getInstance().getReference()
+                .child("organization")
+                .child(organizationName)
+                .child("notifications");
+
+        for (String receiverEmail : userList) {
+            if (!receiverEmail.equals(senderName)) {
+                String messageId = notificationsRef.push().getKey();
+                Message message = new Message(senderId, senderName, receiverEmail, messageText, System.currentTimeMillis());
+
+                notificationsRef.child(messageId).setValue(message)
+                        .addOnSuccessListener(aVoid -> {
+                            Log.d("Notification", "Message sent to all successfully");
+                        })
+                        .addOnFailureListener(e -> Log.e("Notification", "Failed to send message to all", e));
+            }
+        }
+        loadChatMessages(senderId, "All");
+    }
 
     private void loadChatMessages(String currentUserId, String receiverId) {
+        if (messagesEventListener != null) {
+            databaseReference.child("organization").child(organizationName).child("notifications").removeEventListener(messagesEventListener);
+        }
+
         DatabaseReference messagesRef = FirebaseDatabase.getInstance().getReference()
                 .child("organization")
                 .child(organizationName)
                 .child("notifications");
 
-        messagesRef.addValueEventListener(new ValueEventListener() {
+        messagesEventListener = messagesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 messageList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Message message = snapshot.getValue(Message.class);
                     if (message != null) {
-                        // Compare senderName and receiverId to filter messages
                         if ((message.getSenderName().equals(currentUserId) && message.getReceiverId().equals(receiverId)) ||
-                                (message.getSenderName().equals(receiverId) && message.getReceiverId().equals(currentUserId))) {
+                                (message.getSenderName().equals(receiverId) && message.getReceiverId().equals(currentUserId)) ||
+                                (receiverId.equals("All") && message.getReceiverId().equals(currentUserId))) {
                             messageList.add(message);
                         }
                     }

@@ -104,6 +104,31 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
+                        <TextView
+                            android:layout_width="149dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="casual"
+                            android:gravity="center"
+                            android:text="Employees"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/usernumbers"
+                            android:layout_width="149dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="serif"
+                            android:gravity="center"
+                            android:text="No of employees"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+
+
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -124,6 +149,29 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="149dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="casual"
+                            android:gravity="center"
+                            android:text="Tasks"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/taskassigned"
+                            android:layout_width="149dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="serif"
+                            android:gravity="center"
+                            android:text="Tasks Assigned"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -146,6 +194,31 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
+                        <TextView
+                            android:layout_width="149dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="casual"
+                            android:gravity="center"
+                            android:text="Admins"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/adminnumber"
+                            android:layout_width="149dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="serif"
+                            android:gravity="center"
+                            android:text="No of Admins"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -166,6 +239,31 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="149dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="30dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="casual"
+                            android:gravity="center"
+                            android:text="Completed"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/completedtasks"
+                            android:layout_width="149dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="8dp"
+                            android:fontFamily="serif"
+                            android:gravity="center"
+                            android:text="Completed Tasks"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
 
                         <ImageView
                             android:layout_width="match_parent"

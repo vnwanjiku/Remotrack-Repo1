@@ -27,7 +27,7 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity {
 
     private MaterialCardView card3, card4, card5;
-    private TextView taskTextView3, taskTextView4, taskTextView5, userrealname, userrealtime;
+    private TextView taskTextView3, taskTextView4, taskTextView5, userrealname, userrealtime, announcements;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabaseUsers, mDatabaseTasks;
     private String currentUserOrganization;
@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
         userrealname = findViewById(R.id.userrealname);
         userrealtime = findViewById(R.id.userrealtime);
+
+        announcements = findViewById(R.id.announcements);
 
         fetchCurrentUserOrganization();
 

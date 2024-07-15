@@ -216,19 +216,31 @@
                 android:layout_marginTop="10dp"
                 app:cardBackgroundColor="@color/neutral">
 
-                <LinearLayout
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
 
-
-
+                    <!-- ImageView as background -->
                     <ImageView
+                        android:id="@+id/imageViewBackground"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:scaleType="centerCrop"
                         app:srcCompat="@drawable/backimagetwo" />
-                </LinearLayout>
+
+                    <!-- TextView overlaying the ImageView -->
+                    <TextView
+                        android:id="@+id/announcements"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Your Text Here"
+                        android:textSize="18sp"
+                        android:textColor="@android:color/white"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:layout_gravity="bottom" />
+
+                </FrameLayout>
 
             </com.google.android.material.card.MaterialCardView>
 

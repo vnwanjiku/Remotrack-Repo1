@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <com.google.android.material.card.MaterialCardView
@@ -11,8 +10,7 @@
         style="?attr/materialCardViewFilledStyle"
         android:layout_width="420dp"
         android:layout_height="130dp"
-        app:cardBackgroundColor="@color/neutral"
-        >
+        app:cardBackgroundColor="@color/neutral">
 
         <ImageView
             android:id="@+id/left_arrow"
@@ -21,9 +19,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/leftarrow"
-            />
-
+            android:src="@drawable/leftarrow"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,9 +28,7 @@
             android:layout_marginLeft="20dp"
             android:fontFamily="@font/alfa_slab_one"
             android:text="Schedule Task"
-            android:textSize="29dp" />
-
-
+            android:textSize="29dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,121 +43,116 @@
                 android:background="@drawable/circular_shape"
                 android:clipToOutline="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/user" />
+                android:src="@drawable/user"/>
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="542dp"
-    android:layout_marginTop="131dp"
-    android:background="@color/white">
-
-    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="542dp"
+        android:layout_marginTop="131dp"
+        android:background="@color/white">
 
-        <!-- Page Title -->
-
-        <!-- Task Name -->
-        <TextView
-            android:id="@+id/text_task_name"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Task Name"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="16dp" />
+            android:padding="16dp">
 
-        <EditText
-            android:id="@+id/edit_task_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_task_name"
-            android:layout_marginTop="8dp"
-            android:hint="Enter task name"
-            android:padding="8dp"
-            android:background="@drawable/edittext_background" />
+            <!-- Task Name -->
+            <TextView
+                android:id="@+id/text_task_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task Name"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="16dp"/>
 
-        <!-- Task Description -->
-        <TextView
-            android:id="@+id/text_task_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Task Description"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:layout_below="@id/edit_task_name"
-            android:layout_marginTop="16dp" />
+            <Spinner
+                android:id="@+id/spinner_task_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_task_name"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:background="@drawable/edittext_background"/>
 
-        <EditText
-            android:id="@+id/edit_task_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_task_description"
-            android:layout_marginTop="8dp"
-            android:hint="Enter task description"
-            android:padding="8dp"
-            android:background="@drawable/edittext_background" />
+            <!-- Task Description -->
+            <TextView
+                android:id="@+id/text_task_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task Description"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_below="@id/spinner_task_name"
+                android:layout_marginTop="16dp"/>
 
-        <!-- Task Date -->
-        <TextView
-            android:id="@+id/text_task_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Task Date"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:layout_below="@id/edit_task_description"
-            android:layout_marginTop="16dp" />
+            <Spinner
+                android:id="@+id/spinner_task_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_task_description"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:background="@drawable/edittext_background"/>
 
-        <DatePicker
-            android:id="@+id/date_picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_task_date"
-            android:layout_marginTop="8dp" />
+            <!-- Task Date -->
+            <TextView
+                android:id="@+id/text_task_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task Date"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_below="@id/spinner_task_description"
+                android:layout_marginTop="16dp"/>
 
-        <!-- Task Time -->
-        <TextView
-            android:id="@+id/text_task_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Task Time"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:layout_below="@id/date_picker"
-            android:layout_marginTop="16dp" />
+            <DatePicker
+                android:id="@+id/date_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_task_date"
+                android:layout_marginTop="8dp"/>
 
-        <TimePicker
-            android:id="@+id/time_picker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_task_time"
-            android:layout_marginTop="8dp"
-            android:timePickerMode="spinner" />
+            <!-- Task Time -->
+            <TextView
+                android:id="@+id/text_task_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task Time"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_below="@id/date_picker"
+                android:layout_marginTop="16dp"/>
 
-        <!-- Save Task Button -->
-        <Button
-            android:id="@+id/btn_save_task"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/time_picker"
-            android:layout_marginTop="32dp"
-            android:backgroundTint="@color/black"
-            android:text="Save Task"
-            android:textColor="@android:color/white"
-            android:padding="12dp"
-            android:layout_centerHorizontal="true" />
+            <TimePicker
+                android:id="@+id/time_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_task_time"
+                android:layout_marginTop="8dp"
+                android:timePickerMode="spinner"/>
 
-    </RelativeLayout>
-</ScrollView>
+            <!-- Save Task Button -->
+            <Button
+                android:id="@+id/btn_save_task"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/time_picker"
+                android:layout_marginTop="32dp"
+                android:backgroundTint="@color/black"
+                android:text="Schedule Task"
+                android:textColor="@android:color/white"
+                android:padding="12dp"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+    </ScrollView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card2"
@@ -171,8 +160,7 @@
         android:layout_width="420dp"
         android:layout_height="150dp"
         android:layout_marginTop="675dp"
-        app:cardBackgroundColor="@color/neutral"
-        >
+        app:cardBackgroundColor="@color/neutral">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -186,7 +174,7 @@
                 android:layout_marginLeft="33dp"
                 android:layout_marginTop="15dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/task" />
+                app:srcCompat="@drawable/task"/>
 
             <ImageView
                 android:id="@+id/calendar"
@@ -195,7 +183,7 @@
                 android:layout_marginLeft="55dp"
                 android:layout_marginTop="15dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/calendar" />
+                app:srcCompat="@drawable/calendar"/>
 
             <ImageView
                 android:id="@+id/bell"
@@ -204,7 +192,7 @@
                 android:layout_marginLeft="55dp"
                 android:layout_marginTop="15dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/bell" />
+                app:srcCompat="@drawable/bell"/>
 
             <ImageView
                 android:id="@+id/user"
@@ -213,10 +201,8 @@
                 android:layout_marginLeft="55dp"
                 android:layout_marginTop="15dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/user" />
+                app:srcCompat="@drawable/user"/>
         </LinearLayout>
-
     </com.google.android.material.card.MaterialCardView>
-
 
 </RelativeLayout>

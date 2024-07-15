@@ -1,11 +1,7 @@
 package com.example.remoteapplication;
 
-import static androidx.fragment.app.FragmentManager.TAG;
-
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,10 +23,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Calendar;
 
 public class Admin extends AppCompatActivity {
-    private TextView userrealname, userrealtime;
+    private static final String TAG = "Admin";
+    private TextView userrealname, userrealtime, usernumbers, tasksassigned, adminnumber, completedtasks;
     private FirebaseAuth mAuth;
     private DatabaseReference userRef;
-    private Button registeruser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +36,19 @@ public class Admin extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         userrealname = findViewById(R.id.userrealname);
         userrealtime = findViewById(R.id.userrealtime);
+        completedtasks = findViewById(R.id.completedtasks);
+        adminnumber = findViewById(R.id.adminnumber);
+        usernumbers = findViewById(R.id.usernumbers);
+        tasksassigned = findViewById(R.id.taskassigned);
 
         // Fetch user name
         fetchUserName();
 
         // Set greeting based on time of day
         setGreetingMessage();
+
+        // Fetch user and task counts
+        fetchUserAndTaskCounts();
 
         // Initialize UI components and set click listeners
         initializeUIComponents();
@@ -59,20 +63,25 @@ public class Admin extends AppCompatActivity {
             userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    boolean userFound = false;
                     for (DataSnapshot orgSnapshot : snapshot.getChildren()) {
                         DataSnapshot usersSnapshot = orgSnapshot.child("users");
                         if (usersSnapshot.child(uid).exists()) {
-                            String firstName = usersSnapshot.child(uid).child("firstName").getValue(String.class);
-
-                            if (firstName != null) {
-                                userrealname.setText(firstName);
+                            Object firstNameObj = usersSnapshot.child(uid).child("firstName").getValue();
+                            if (firstNameObj instanceof String) {
+                                String firstName = (String) firstNameObj;
+                                userrealname.setText(firstName != null ? firstName : "Welcome");
                             } else {
+                                Log.e(TAG, "firstName is not a string: " + firstNameObj);
                                 userrealname.setText("Welcome");
                             }
-                            return; // Exit loop once user is found
+                            userFound = true;
+                            break; // Exit loop once user is found
                         }
                     }
-                    userrealname.setText("Welcome"); // User not found scenario
+                    if (!userFound) {
+                        userrealname.setText("Welcome"); // User not found scenario
+                    }
                 }
 
                 @Override
@@ -89,7 +98,6 @@ public class Admin extends AppCompatActivity {
             finish();
         }
     }
-
 
     private void setGreetingMessage() {
         Calendar calendar = Calendar.getInstance();
@@ -162,6 +170,51 @@ public class Admin extends AppCompatActivity {
                 // Start TaskManager activity
                 Intent intent = new Intent(Admin.this, Adminprofile.class);
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void fetchUserAndTaskCounts() {
+        DatabaseReference orgRef = FirebaseDatabase.getInstance().getReference("organization");
+
+        orgRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int userCount = 0;
+                int adminCount = 0;
+                int taskCount = 0;
+                int completedTaskCount = 0;
+
+                for (DataSnapshot orgSnapshot : snapshot.getChildren()) {
+                    DataSnapshot usersSnapshot = orgSnapshot.child("users");
+                    for (DataSnapshot userSnapshot : usersSnapshot.getChildren()) {
+                        String role = userSnapshot.child("role").getValue(String.class);
+                        if ("user".equals(role)) {
+                            userCount++;
+                        } else if ("admin".equals(role)) {
+                            adminCount++;
+                        }
+                    }
+
+                    DataSnapshot tasksSnapshot = orgSnapshot.child("tasks");
+                    for (DataSnapshot taskSnapshot : tasksSnapshot.getChildren()) {
+                        taskCount++;
+                        String status = taskSnapshot.child("status").getValue(String.class);
+                        if ("Complete".equals(status)) {
+                            completedTaskCount++;
+                        }
+                    }
+                }
+
+                usernumbers.setText(String.valueOf(userCount));
+                adminnumber.setText(String.valueOf(adminCount));
+                tasksassigned.setText(String.valueOf(taskCount));
+                completedtasks.setText(String.valueOf(completedTaskCount));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Admin.this, "Failed to load counts: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
