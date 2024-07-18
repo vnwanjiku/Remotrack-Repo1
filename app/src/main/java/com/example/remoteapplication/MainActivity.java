@@ -54,57 +54,36 @@ public class MainActivity extends AppCompatActivity {
         announcements = findViewById(R.id.announcements);
 
         fetchCurrentUserOrganization();
-
         setGreetingMessage();
 
         ImageView leftArrow = findViewById(R.id.left_arrow);
-        leftArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start MainUserLogin activity
-                Intent intent = new Intent(MainActivity.this, MainUserLogin.class);
-                startActivity(intent);
-            }
+        leftArrow.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MainUserLogin.class);
+            startActivity(intent);
         });
 
         ImageView task = findViewById(R.id.task);
-        task.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start TaskManager activity
-                Intent intent = new Intent(MainActivity.this, TaskManager.class);
-                startActivity(intent);
-            }
+        task.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, TaskManager.class);
+            startActivity(intent);
         });
 
         ImageView calendar = findViewById(R.id.calendar);
-        calendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start ScheduleTaskActivity activity
-                Intent intent = new Intent(MainActivity.this, ScheduleTaskActivity.class);
-                startActivity(intent);
-            }
+        calendar.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ScheduleTaskActivity.class);
+            startActivity(intent);
         });
 
         ImageView bell = findViewById(R.id.bell);
-        bell.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start Notification activity
-                Intent intent = new Intent(MainActivity.this, Notification.class);
-                startActivity(intent);
-            }
+        bell.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, Notification.class);
+            startActivity(intent);
         });
 
         ImageView user = findViewById(R.id.user);
-        user.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start Profile activity
-                Intent intent = new Intent(MainActivity.this, Profile.class);
-                startActivity(intent);
-            }
+        user.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, Profile.class);
+            startActivity(intent);
         });
     }
 
@@ -127,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                         mDatabaseTasks = mDatabaseUsers.child(currentUserOrganization).child("tasks");
                         fetchUserName();
                         loadUserTasks();
+                        fetchLatestAnnouncement();  // Fetch the latest announcement after loading tasks
                         break;
                     }
                 }
@@ -236,6 +216,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(MainActivity.this, "Failed to load tasks: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void fetchLatestAnnouncement() {
+        DatabaseReference notificationsRef = FirebaseDatabase.getInstance().getReference()
+                .child("organization")
+                .child(currentUserOrganization)
+                .child("notifications");
+
+        notificationsRef.orderByChild("receiverId").equalTo("All").limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
+                    Message latestMessage = messageSnapshot.getValue(Message.class);
+                    if (latestMessage != null) {
+                        announcements.setText(latestMessage.getText());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Failed to load announcement: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

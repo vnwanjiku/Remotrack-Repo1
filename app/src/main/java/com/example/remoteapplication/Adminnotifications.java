@@ -97,7 +97,6 @@ public class Adminnotifications extends AppCompatActivity {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        // Fetch organization name
         databaseReference.child("organization").orderByChild("users/" + userId)
                 .startAt("").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -106,7 +105,7 @@ public class Adminnotifications extends AppCompatActivity {
                             organizationName = organizationSnapshot.getKey();
                             Log.d("Adminnotifications", "Organization found: " + organizationName);
                             fetchUsers(organizationName);
-                            break; // Assuming there's only one organization per user
+                            break;
                         }
                     }
 
@@ -126,8 +125,8 @@ public class Adminnotifications extends AppCompatActivity {
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<String> userList = new ArrayList<>();
-                userList.add("All"); // Add "All" as the first option
+                userList.clear();
+                userList.add("All");
 
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     String email = userSnapshot.child("email").getValue(String.class);
@@ -150,7 +149,6 @@ public class Adminnotifications extends AppCompatActivity {
     private void populateSpinner(List<String> userList) {
         String currentUserEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
-        // Filter out the current user's email from the list
         List<String> recipientsList = new ArrayList<>(userList);
         recipientsList.remove(currentUserEmail);
 
@@ -184,7 +182,6 @@ public class Adminnotifications extends AppCompatActivity {
         notificationsRef.child(messageId).setValue(message)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Notification", "Message sent successfully");
-                    // Append the new message to the message list
                     messageList.add(message);
                     messageAdapter.notifyItemInserted(messageList.size() - 1);
                     recyclerViewMessages.scrollToPosition(messageList.size() - 1);
@@ -226,6 +223,7 @@ public class Adminnotifications extends AppCompatActivity {
         messagesEventListener = messagesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Message> tempMessageList = new ArrayList<>(messageList);
                 messageList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Message message = snapshot.getValue(Message.class);
@@ -236,6 +234,9 @@ public class Adminnotifications extends AppCompatActivity {
                             messageList.add(message);
                         }
                     }
+                }
+                if (messageList.isEmpty()) {
+                    messageList.addAll(tempMessageList);
                 }
                 messageAdapter.notifyDataSetChanged();
                 recyclerViewMessages.scrollToPosition(messageList.size() - 1);

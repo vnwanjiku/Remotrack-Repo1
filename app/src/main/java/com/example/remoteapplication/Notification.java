@@ -35,6 +35,7 @@ public class Notification extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private String organizationName;
     private List<String> userList;
+    private ValueEventListener messagesEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class Notification extends AppCompatActivity {
         leftArrow.setOnClickListener(v -> startActivity(new Intent(Notification.this, MainActivity.class)));
 
         ImageView task = findViewById(R.id.task);
-        task.setOnClickListener(v -> startActivity(new Intent(Notification.this, AssignTaskActivity.class)));
+        task.setOnClickListener(v -> startActivity(new Intent(Notification.this, TaskManager.class)));
 
         ImageView barchart = findViewById(R.id.calendar);
         barchart.setOnClickListener(v -> startActivity(new Intent(Notification.this, ScheduleTaskActivity.class)));
@@ -159,7 +160,6 @@ public class Notification extends AppCompatActivity {
         });
     }
 
-
     private void sendMessage(String messageText, String senderId, String senderName, String receiverId) {
         DatabaseReference notificationsRef = FirebaseDatabase.getInstance().getReference()
                 .child("organization")
@@ -174,31 +174,39 @@ public class Notification extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Notification", "Message sent successfully");
                     editTextMessage.setText("");
-                    loadChatMessages(senderId, receiverId); // Update with Firebase IDs
                 })
                 .addOnFailureListener(e -> Log.e("Notification", "Failed to send message", e));
     }
 
-
     private void loadChatMessages(String currentUserId, String receiverId) {
+        if (messagesEventListener != null) {
+            databaseReference.child("organization").child(organizationName).child("notifications").removeEventListener(messagesEventListener);
+        }
+
         DatabaseReference messagesRef = FirebaseDatabase.getInstance().getReference()
                 .child("organization")
                 .child(organizationName)
                 .child("notifications");
 
-        messagesRef.addValueEventListener(new ValueEventListener() {
+        messagesEventListener = messagesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Store existing messages in a temporary list to avoid clearing
+                List<Message> tempMessageList = new ArrayList<>(messageList);
                 messageList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Message message = snapshot.getValue(Message.class);
                     if (message != null) {
-                        // Compare senderName and receiverId to filter messages
                         if ((message.getSenderName().equals(currentUserId) && message.getReceiverId().equals(receiverId)) ||
-                                (message.getSenderName().equals(receiverId) && message.getReceiverId().equals(currentUserId))) {
+                                (message.getSenderName().equals(receiverId) && message.getReceiverId().equals(currentUserId)) ||
+                                (receiverId.equals("All") && message.getReceiverId().equals(currentUserId))) {
                             messageList.add(message);
                         }
                     }
+                }
+                // Check if any new messages were added, if not, restore the old messages
+                if (messageList.isEmpty()) {
+                    messageList.addAll(tempMessageList);
                 }
                 messageAdapter.notifyDataSetChanged();
                 recyclerViewMessages.scrollToPosition(messageList.size() - 1);
@@ -210,8 +218,4 @@ public class Notification extends AppCompatActivity {
             }
         });
     }
-
-
-
-
 }

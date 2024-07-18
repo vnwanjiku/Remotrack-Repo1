@@ -121,7 +121,7 @@ public class AssignTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start TaskManager activity
-                Intent intent = new Intent(AssignTaskActivity.this, Notification.class);
+                Intent intent = new Intent(AssignTaskActivity.this, Adminnotifications.class);
                 startActivity(intent);
             }
         });
@@ -131,7 +131,7 @@ public class AssignTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start TaskManager activity
-                Intent intent = new Intent(AssignTaskActivity.this, Profile.class);
+                Intent intent = new Intent(AssignTaskActivity.this, Adminprofile.class);
                 startActivity(intent);
             }
         });

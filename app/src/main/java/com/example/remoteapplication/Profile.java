@@ -42,6 +42,16 @@ public class Profile extends AppCompatActivity {
 
         loadUserProfile();
 
+        logoutbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Intent intent = new Intent(Profile.this, MainUserLogin.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         ImageView leftArrow = findViewById(R.id.left_arrow);
         leftArrow.setOnClickListener(new View.OnClickListener() {
             @Override
