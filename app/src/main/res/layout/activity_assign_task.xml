@@ -161,6 +161,101 @@
                     android:padding="12dp"
                     android:layout_marginEnd="8dp" />
 
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- Section 2: Configure Task -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:background="@color/white"
+            android:layout_marginBottom="32dp">
+
+            <!-- Section Title -->
+            <TextView
+                android:id="@+id/text_assign_task"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Configure Task"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp" />
+
+
+
+            <!-- Task to configure -->
+            <TextView
+                android:id="@+id/text_task_to_configure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_below="@id/text_assign_task"
+                android:layout_marginTop="16dp" />
+
+            <Spinner
+                android:id="@+id/spinner_select_task_to_configure"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_task_to_configure"
+                android:layout_marginTop="8dp" />
+
+
+            <!-- Task Description -->
+            <TextView
+                android:id="@+id/text_task_description_config"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task Description"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_below="@id/spinner_select_task_to_configure"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/edit_task_description_config"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_task_description_config"
+                android:layout_marginTop="8dp"
+                android:hint="Enter task description"
+                android:padding="8dp"
+                android:background="@drawable/edittext_background" />
+
+            <!-- Select Individual -->
+            <TextView
+                android:id="@+id/text_select_individual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Assign to"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_below="@id/edit_task_description_config"
+                android:layout_marginTop="16dp" />
+
+            <Spinner
+                android:id="@+id/spinner_select_individual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/text_select_individual"
+                android:layout_marginTop="8dp" />
+
+            <!-- Button to update and delete tasks -->
+            <LinearLayout
+                android:id="@+id/buttons_delete_update_task"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/spinner_select_individual"
+                android:layout_marginTop="32dp">
+
                 <Button
                     android:id="@+id/btn_update_task"
                     android:layout_width="0dp"
@@ -182,58 +277,6 @@
                     android:textColor="@android:color/white"
                     android:padding="12dp" />
             </LinearLayout>
-        </RelativeLayout>
-
-        <!-- Section 2: Assign Task -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:background="@color/white"
-            android:layout_marginBottom="32dp">
-
-            <!-- Section Title -->
-            <TextView
-                android:id="@+id/text_assign_task"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Assign Task"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="16dp" />
-
-            <!-- Select Individual -->
-            <TextView
-                android:id="@+id/text_select_individual"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Assign to"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:layout_below="@id/text_assign_task"
-                android:layout_marginTop="16dp" />
-
-            <Spinner
-                android:id="@+id/spinner_select_individual"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_select_individual"
-                android:layout_marginTop="8dp" />
-
-            <!-- Save Task Button -->
-            <Button
-                android:id="@+id/btn_save_task"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/spinner_select_individual"
-                android:layout_marginTop="32dp"
-                android:backgroundTint="@color/black"
-                android:text="Save Task"
-                android:textColor="@android:color/white"
-                android:padding="12dp" />
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>

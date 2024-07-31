@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -233,12 +234,12 @@
                         android:id="@+id/announcements"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="Your Text Here"
-                        android:textSize="18sp"
-                        android:textColor="@android:color/white"
+                        android:layout_gravity="bottom"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:layout_gravity="bottom" />
+                        android:text="Your Text Here"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp" />
 
                 </FrameLayout>
 
@@ -262,20 +263,66 @@
                 android:layout_marginTop="10dp"
                 app:cardBackgroundColor="@color/grey">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
-                        android:padding="16dp"
-                        android:scaleType="centerCrop"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="145dp"
+                        android:text="Tasks"
+                        android:textSize="24sp" />
 
-                        app:srcCompat="@drawable/bargraph" />
-                </LinearLayout>
+                    <TextView
+                        android:id="@+id/tasknumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="45dp"
+                        android:layout_marginLeft="125dp"
+                        android:text="0"
+                        android:padding="40dp"
+                        android:textSize="34sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="160dp"
+                        android:text="Started"
+                        android:layout_marginLeft="40dp"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/taskstarted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="190dp"
+                        android:text="0"
+                        android:padding="40dp"
+                        android:layout_marginLeft="30dp"
+                        android:textSize="34sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="160dp"
+                        android:layout_marginLeft="210dp"
+                        android:text="Completed"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/taskcompleted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="190dp"
+                        android:padding="40dp"
+                        android:layout_marginLeft="225dp"
+                        android:text="0"
+                        android:textSize="34sp" />
+
+                </RelativeLayout>
 
             </com.google.android.material.card.MaterialCardView>
 

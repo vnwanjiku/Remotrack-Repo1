@@ -299,52 +299,31 @@
                 android:layout_marginTop="10dp"
                 app:cardBackgroundColor="@color/neutral">
 
-                <LinearLayout
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
 
+                    <!-- ImageView as background -->
                     <ImageView
+                        android:id="@+id/imageViewBackground"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:scaleType="centerCrop"
                         app:srcCompat="@drawable/backimagetwo" />
-                </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+                    <!-- TextView overlaying the ImageView -->
+                    <TextView
+                        android:id="@+id/announcements"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Your Text Here"
+                        android:textSize="18sp"
+                        android:textColor="@android:color/white"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:layout_gravity="bottom" />
 
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:fontFamily="@font/alfa_slab_one"
-                android:text="This Week"
-                android:textSize="24sp" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card10"
-                style="?attr/materialCardViewFilledStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
-                app:cardBackgroundColor="@color/grey">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
-                        android:padding="16dp"
-                        android:scaleType="centerCrop"
-
-                        app:srcCompat="@drawable/bargraph" />
-                </LinearLayout>
+                </FrameLayout>
 
             </com.google.android.material.card.MaterialCardView>
 

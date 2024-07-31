@@ -24,7 +24,7 @@ import java.util.Calendar;
 
 public class Admin extends AppCompatActivity {
     private static final String TAG = "Admin";
-    private TextView userrealname, userrealtime, usernumbers, tasksassigned, adminnumber, completedtasks;
+    private TextView userrealname, userrealtime, usernumbers, tasksassigned, adminnumber, completedtasks, announcements;
     private FirebaseAuth mAuth;
     private DatabaseReference userRef;
 
@@ -40,6 +40,7 @@ public class Admin extends AppCompatActivity {
         adminnumber = findViewById(R.id.adminnumber);
         usernumbers = findViewById(R.id.usernumbers);
         tasksassigned = findViewById(R.id.taskassigned);
+        announcements = findViewById(R.id.announcements);
 
         // Fetch user name
         fetchUserName();
@@ -52,6 +53,8 @@ public class Admin extends AppCompatActivity {
 
         // Initialize UI components and set click listeners
         initializeUIComponents();
+
+        fetchLatestAnnouncement();
     }
 
     private void fetchUserName() {
@@ -174,6 +177,61 @@ public class Admin extends AppCompatActivity {
         });
     }
 
+    private void fetchLatestAnnouncement() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(Admin.this, "No user logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DatabaseReference orgRef = FirebaseDatabase.getInstance().getReference("organization");
+
+        orgRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                final boolean[] announcementFetched = {false};
+                for (DataSnapshot orgSnapshot : snapshot.getChildren()) {
+                    if (orgSnapshot.child("users").hasChild(currentUser.getUid())) {
+                        DatabaseReference notificationsRef = orgSnapshot.child("notifications").getRef();
+
+                        notificationsRef.orderByChild("receiverId").equalTo("All").limitToLast(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
+                                    Message latestMessage = messageSnapshot.getValue(Message.class);
+                                    if (latestMessage != null) {
+                                        announcements.setText(latestMessage.getText());
+                                        announcementFetched[0] = true;
+                                        break;
+                                    }
+                                }
+                                if (!announcementFetched[0]) {
+                                    announcements.setText("No announcements available.");
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Toast.makeText(Admin.this, "Failed to load announcement: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        break; // Exit loop once organization is found
+                    }
+                }
+                if (!announcementFetched[0]) {
+                    announcements.setText("No announcements available.");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Admin.this, "Failed to get organization: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
     private void fetchUserAndTaskCounts() {
         DatabaseReference orgRef = FirebaseDatabase.getInstance().getReference("organization");
 
@@ -218,4 +276,5 @@ public class Admin extends AppCompatActivity {
             }
         });
     }
+
 }

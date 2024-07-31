@@ -5,10 +5,16 @@ import static androidx.fragment.app.FragmentManager.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.androidplot.xy.XYPlot;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,18 +22,13 @@ import android.widget.Toast;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
     private MaterialCardView card3, card4, card5;
-    private TextView taskTextView3, taskTextView4, taskTextView5, userrealname, userrealtime, announcements;
+    private TextView taskTextView3, taskTextView4, taskTextView5, userrealname, userrealtime, announcements, tasknumber, taskstarted, taskcompleted;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabaseUsers, mDatabaseTasks;
     private String currentUserOrganization;
@@ -48,9 +49,12 @@ public class MainActivity extends AppCompatActivity {
         taskTextView4 = findViewById(R.id.task_text_view_4);
         taskTextView5 = findViewById(R.id.task_text_view_5);
 
+        tasknumber = findViewById(R.id.tasknumber);
+        taskstarted = findViewById(R.id.taskstarted);
+        taskcompleted = findViewById(R.id.taskcompleted);
+
         userrealname = findViewById(R.id.userrealname);
         userrealtime = findViewById(R.id.userrealtime);
-
         announcements = findViewById(R.id.announcements);
 
         fetchCurrentUserOrganization();
@@ -186,10 +190,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int taskCount = 0;
+                int startedCount = 0;
+                int completedCount = 0;
+
                 for (DataSnapshot taskSnapshot : snapshot.getChildren()) {
                     String taskName = taskSnapshot.child("taskName").getValue(String.class);
                     String dueDate = taskSnapshot.child("dueDate").getValue(String.class);
                     String description = taskSnapshot.child("taskDescription").getValue(String.class);
+                    String status = taskSnapshot.child("status").getValue(String.class);
+
                     if (taskName != null) {
                         taskCount++;
                         switch (taskCount) {
@@ -206,8 +215,20 @@ public class MainActivity extends AppCompatActivity {
                                 break;
                         }
                     }
+
+                    if ("Started".equals(status)) {
+                        startedCount++;
+                    } else if ("Completed".equals(status)) {
+                        completedCount++;
+                    }
+
                     if (taskCount >= 3) break;
                 }
+
+                tasknumber.setText(String.valueOf(taskCount));
+                taskstarted.setText(String.valueOf(startedCount));
+                taskcompleted.setText(String.valueOf(completedCount));
+
                 if (taskCount == 0) {
                     Toast.makeText(MainActivity.this, "No tasks assigned", Toast.LENGTH_SHORT).show();
                 }
