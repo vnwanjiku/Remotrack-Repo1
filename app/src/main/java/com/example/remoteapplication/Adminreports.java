@@ -112,17 +112,30 @@ public class Adminreports extends AppCompatActivity {
     }
 
     private void loadDataFromDatabase() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        Log.d(TAG, "Loading data from database for organization: " + currentUserOrganization);
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("organization");
 
         // Load tasks
-        databaseReference.child(currentUserOrganization).child("tasks").addValueEventListener(new ValueEventListener() {
+        databaseReference.child(currentUserOrganization).child("tasks").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d(TAG, "DataSnapshot for tasks: " + dataSnapshot.toString());
+                if (!dataSnapshot.exists()) {
+                    Log.e(TAG, "Tasks node does not exist!");
+                    return;
+                }
+
                 taskList.clear();
+                Log.d(TAG, "Number of tasks: " + dataSnapshot.getChildrenCount());
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String taskName = snapshot.child("taskName").getValue(String.class);
                     String status = snapshot.child("status").getValue(String.class);
                     String assignedUser = snapshot.child("assignedUser").getValue(String.class);
+                    Log.d(TAG, "Loading data from database for organization: " + currentUserOrganization);
+
+                    Log.d(TAG, "Task: " + taskName + ", Status: " + status + ", AssignedUser: " + assignedUser);
 
                     if (taskName != null && status != null && assignedUser != null) {
                         Task task = new Task();
@@ -142,14 +155,19 @@ public class Adminreports extends AppCompatActivity {
         });
 
         // Load admins
-        databaseReference.child(currentUserOrganization).child("users").orderByChild("role").equalTo("admin").addValueEventListener(new ValueEventListener() {
+        databaseReference.child(currentUserOrganization).child("users").orderByChild("role").equalTo("admin").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 adminList.clear();
+                Log.d(TAG, "DataSnapshot for admins: " + dataSnapshot.toString());
+                Log.d(TAG, "Number of admins: " + dataSnapshot.getChildrenCount());
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String firstName = snapshot.child("firstName").getValue(String.class);
                     String lastName = snapshot.child("lastName").getValue(String.class);
                     String email = snapshot.child("email").getValue(String.class);
+
+                    Log.d(TAG, "Admin: " + firstName + " " + lastName + ", Email: " + email);
 
                     if (firstName != null && lastName != null && email != null) {
                         User admin = new User();
@@ -169,14 +187,19 @@ public class Adminreports extends AppCompatActivity {
         });
 
         // Load employees
-        databaseReference.child(currentUserOrganization).child("users").orderByChild("role").equalTo("user").addValueEventListener(new ValueEventListener() {
+        databaseReference.child(currentUserOrganization).child("users").orderByChild("role").equalTo("user").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 employeeList.clear();
+                Log.d(TAG, "DataSnapshot for employees: " + dataSnapshot.toString());
+                Log.d(TAG, "Number of employees: " + dataSnapshot.getChildrenCount());
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String firstName = snapshot.child("firstName").getValue(String.class);
                     String lastName = snapshot.child("lastName").getValue(String.class);
                     String email = snapshot.child("email").getValue(String.class);
+
+                    Log.d(TAG, "Employee: " + firstName + " " + lastName + ", Email: " + email);
 
                     if (firstName != null && lastName != null && email != null) {
                         User employee = new User();
@@ -195,4 +218,6 @@ public class Adminreports extends AppCompatActivity {
             }
         });
     }
+
+
 }

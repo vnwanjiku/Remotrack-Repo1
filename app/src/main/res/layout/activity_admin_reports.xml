@@ -45,28 +45,64 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_marginTop="130dp"
-        android:orientation="vertical">
 
-        <ListView
-            android:id="@+id/listViewTasks"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="550dp"
+            android:layout_marginTop="130dp"
+            android:orientation="vertical">
 
-        <ListView
-            android:id="@+id/listViewAdmins"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            <!-- Heading for Tasks -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Tasks"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:background="#DDDDDD"/>
 
-        <ListView
-            android:id="@+id/listViewEmployees"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            <!-- Heading for Admins -->
+            <ListView
+                android:id="@+id/listViewTasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Admins"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:background="#DDDDDD"
+                android:layout_marginTop="16dp"/>
+
+            <ListView
+                android:id="@+id/listViewAdmins"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- Heading for Employees -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Employees"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:background="#DDDDDD"
+                android:layout_marginTop="16dp"/>
+
+            <ListView
+                android:id="@+id/listViewEmployees"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"

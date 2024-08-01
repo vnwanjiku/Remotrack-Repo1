@@ -13,14 +13,13 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 public class TaskAdapter extends ArrayAdapter<Task> {
-
     private Context context;
-    private List<Task> taskList;
+    private List<Task> tasks;
 
-    public TaskAdapter(Context context, List<Task> taskList) {
-        super(context, 0, taskList);
+    public TaskAdapter(Context context, List<Task> tasks) {
+        super(context, 0, tasks);
         this.context = context;
-        this.taskList = taskList;
+        this.tasks = tasks;
     }
 
     @NonNull
@@ -30,15 +29,15 @@ public class TaskAdapter extends ArrayAdapter<Task> {
             convertView = LayoutInflater.from(context).inflate(R.layout.item_task, parent, false);
         }
 
-        Task task = taskList.get(position);
+        Task task = tasks.get(position);
 
-        TextView taskNameTextView = convertView.findViewById(R.id.taskName);
-        TextView statusTextView = convertView.findViewById(R.id.status);
-        TextView assignedUserTextView = convertView.findViewById(R.id.assignedUser);
+        TextView taskName = convertView.findViewById(R.id.taskName);
+        TextView taskStatus = convertView.findViewById(R.id.status);
+        TextView assignedUser = convertView.findViewById(R.id.assignedUser);
 
-        taskNameTextView.setText(task.getTaskName());
-        statusTextView.setText(task.getStatus());
-        assignedUserTextView.setText(task.getAssignedUser());
+        taskName.setText(task.getTaskName());
+        taskStatus.setText(task.getStatus());
+        assignedUser.setText(task.getAssignedUser());
 
         return convertView;
     }
