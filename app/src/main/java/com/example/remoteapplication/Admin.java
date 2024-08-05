@@ -127,6 +127,16 @@ public class Admin extends AppCompatActivity {
             }
         });
 
+        Button manage = findViewById(R.id.manageuser);
+        manage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start TaskManager activity
+                Intent intent = new Intent(Admin.this, AdminmanageEmployees.class);
+                startActivity(intent);
+            }
+        });
+
         ImageView task = findViewById(R.id.task);
         task.setOnClickListener(new View.OnClickListener() {
             @Override

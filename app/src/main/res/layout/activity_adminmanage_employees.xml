@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -27,7 +25,7 @@
             android:layout_marginTop="40dp"
             android:layout_marginLeft="20dp"
             android:fontFamily="@font/alfa_slab_one"
-            android:text="Notifications"
+            android:text="Manage"
             android:textSize="25sp"/>
 
         <LinearLayout
@@ -47,72 +45,83 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="130dp"
-        android:layout_height="549dp"
-        tools:context=".AdminNotificationsActivity">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <!-- Spinner for selecting recipient -->
         <Spinner
-            android:id="@+id/spinnerRecipients"
+            android:id="@+id/users_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:background="@drawable/inputsquare"
-            android:padding="8dp"
-            android:spinnerMode="dropdown" />
+            android:layout_marginBottom="8dp"/>
 
-        <!-- Chat bubbles -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewMessages"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_below="@id/spinnerRecipients"
-            android:layout_above="@id/messageInputLayout"
-            android:padding="8dp"
-            android:clipToPadding="false"
-            android:scrollbars="vertical"/>
-
-        <!-- Message input layout -->
-        <LinearLayout
-            android:id="@+id/messageInputLayout"
+        <EditText
+            android:id="@+id/email_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            android:background="@android:color/white"
-            android:elevation="4dp">
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Type a message">
+        <EditText
+            android:id="@+id/firstname_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="First Name"
+            android:inputType="textPersonName"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextMessage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-            </com.google.android.material.textfield.TextInputLayout>
+        <EditText
+            android:id="@+id/lastname_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Last Name"
+            android:inputType="textPersonName"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonSend"
+        <EditText
+            android:id="@+id/role_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Role"
+            android:inputType="text"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_update"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:icon="@drawable/send"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="70dp"
+                android:text="Update"
+                android:backgroundTint="@color/dark"/>
 
-                android:text="Send"
-                android:backgroundTint="@color/design_default_color_primary"/>
+            <Button
+                android:id="@+id/button_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="8dp"
+                android:text="Delete"
+                android:backgroundTint="@color/dark"/>
+
         </LinearLayout>
-
-    </RelativeLayout>
+    </LinearLayout>
 
 
     <LinearLayout
@@ -120,6 +129,7 @@
         android:layout_height="150dp"
         android:layout_gravity="bottom"
         android:layout_marginTop="680dp"
+        android:layout_marginBottom="10dp"
         android:background="@color/grey"
         android:orientation="horizontal"
         android:padding="8dp">
@@ -164,5 +174,4 @@
             android:layout_marginRight="10dp"
             android:src="@drawable/user"/>
     </LinearLayout>
-
 </RelativeLayout>

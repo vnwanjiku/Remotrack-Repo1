@@ -33,7 +33,7 @@
             android:layout_marginLeft="20dp"
             android:fontFamily="@font/alfa_slab_one"
             android:text="Good Morning,"
-            android:textSize="24sp" />
+            android:textSize="25sp" />
 
         <TextView
             android:id="@+id/userrealname"
@@ -65,7 +65,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="542dp"
+        android:layout_height="549dp"
         android:layout_marginTop="131dp">
 
         <LinearLayout
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alfa_slab_one"
                 android:text="Today"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
 
             <GridLayout
@@ -273,23 +273,41 @@
                 </com.google.android.material.card.MaterialCardView>
             </GridLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
             <Button
                 android:id="@+id/registeruser"
-                android:layout_width="200dp"
+                android:layout_width="150dp"
                 android:layout_height="60dp"
-                android:layout_marginLeft="80dp"
+                android:layout_marginLeft="10dp"
                 android:backgroundTint="@color/dark"
                 android:fontFamily="@font/alfa_slab_one"
                 android:text="Register User"
                 android:textColor="@color/grey"
                 android:textSize="15dp" />
 
+
+                <Button
+                    android:id="@+id/manageuser"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="40dp"
+                    android:backgroundTint="@color/dark"
+                    android:fontFamily="@font/alfa_slab_one"
+                    android:text="Manage User"
+                    android:textColor="@color/grey"
+                    android:textSize="15dp" />
+
+            </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/alfa_slab_one"
                 android:text="Announcements"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card9"
@@ -331,58 +349,55 @@
     </ScrollView>
 
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card2"
-        style="?attr/materialCardViewFilledStyle"
-        android:layout_width="420dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_marginTop="675dp"
-        app:cardBackgroundColor="@color/grey"
-        >
+        android:layout_gravity="bottom"
+        android:layout_marginTop="680dp"
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+        android:background="@color/grey"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-            <ImageView
-                android:id="@+id/task"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="33dp"
-                android:layout_marginTop="15dp"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/task" />
+        <ImageView
+            android:id="@+id/task"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/task"/>
 
-            <ImageView
-                android:id="@+id/barchart"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="55dp"
-                android:layout_marginTop="15dp"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/barchart" />
+        <ImageView
+            android:id="@+id/barchart"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/barchart"/>
 
-            <ImageView
-                android:id="@+id/bell"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="55dp"
-                android:layout_marginTop="15dp"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/bell" />
+        <ImageView
+            android:id="@+id/bell"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/bell"/>
 
-            <ImageView
-                android:id="@+id/user"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="55dp"
-                android:layout_marginTop="15dp"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/user" />
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
+        <ImageView
+            android:id="@+id/user"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/user"/>
+    </LinearLayout>
 
 </RelativeLayout>

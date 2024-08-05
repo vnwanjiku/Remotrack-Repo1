@@ -5,7 +5,7 @@ import static androidx.fragment.app.FragmentManager.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.androidplot.xy.XYPlot;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.animation.ValueAnimator;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -225,9 +226,10 @@ public class MainActivity extends AppCompatActivity {
                     if (taskCount >= 3) break;
                 }
 
-                tasknumber.setText(String.valueOf(taskCount));
-                taskstarted.setText(String.valueOf(startedCount));
-                taskcompleted.setText(String.valueOf(completedCount));
+                // Animate the count TextViews
+                animateTextView(0, taskCount, tasknumber);
+                animateTextView(0, startedCount, taskstarted);
+                animateTextView(0, completedCount, taskcompleted);
 
                 if (taskCount == 0) {
                     Toast.makeText(MainActivity.this, "No tasks assigned", Toast.LENGTH_SHORT).show();
@@ -264,4 +266,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void animateTextView(int initialValue, int finalValue, TextView textView) {
+        ValueAnimator animator = ValueAnimator.ofInt(initialValue, finalValue);
+        animator.setDuration(1000); // Animation duration in milliseconds
+        animator.addUpdateListener(animation -> textView.setText(animation.getAnimatedValue().toString()));
+        animator.start();
+    }
+
 }
