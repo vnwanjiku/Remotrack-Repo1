@@ -3,10 +3,12 @@ package com.example.remoteapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +28,8 @@ public class Admin extends AppCompatActivity {
     private static final String TAG = "Admin";
     private TextView userrealname, userrealtime, usernumbers, tasksassigned, adminnumber, completedtasks, announcements;
     private FirebaseAuth mAuth;
-    private DatabaseReference userRef;
+    private DatabaseReference orgRef;
+    private boolean announcementFetched = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,8 @@ public class Admin extends AppCompatActivity {
         setContentView(R.layout.activity_admin);
 
         mAuth = FirebaseAuth.getInstance();
+        orgRef = FirebaseDatabase.getInstance().getReference("organization");
+
         userrealname = findViewById(R.id.userrealname);
         userrealtime = findViewById(R.id.userrealtime);
         completedtasks = findViewById(R.id.completedtasks);
@@ -54,6 +59,7 @@ public class Admin extends AppCompatActivity {
         // Initialize UI components and set click listeners
         initializeUIComponents();
 
+        // Fetch latest announcement
         fetchLatestAnnouncement();
     }
 
@@ -61,23 +67,16 @@ public class Admin extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             String uid = currentUser.getUid();
-            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("organization");
 
-            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            orgRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     boolean userFound = false;
                     for (DataSnapshot orgSnapshot : snapshot.getChildren()) {
                         DataSnapshot usersSnapshot = orgSnapshot.child("users");
                         if (usersSnapshot.child(uid).exists()) {
-                            Object firstNameObj = usersSnapshot.child(uid).child("firstName").getValue();
-                            if (firstNameObj instanceof String) {
-                                String firstName = (String) firstNameObj;
-                                userrealname.setText(firstName != null ? firstName : "Welcome");
-                            } else {
-                                Log.e(TAG, "firstName is not a string: " + firstNameObj);
-                                userrealname.setText("Welcome");
-                            }
+                            String firstName = usersSnapshot.child(uid).child("firstName").getValue(String.class);
+                            userrealname.setText(firstName != null ? firstName : "Welcome");
                             userFound = true;
                             break; // Exit loop once user is found
                         }
@@ -118,72 +117,51 @@ public class Admin extends AppCompatActivity {
 
     private void initializeUIComponents() {
         ImageView leftArrow = findViewById(R.id.left_arrow);
-        leftArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start MainUserLogin activity
-                Intent intent = new Intent(Admin.this, MainUserLogin.class);
-                startActivity(intent);
-            }
+        leftArrow.setOnClickListener(v -> {
+            // Start MainUserLogin activity
+            Intent intent = new Intent(Admin.this, MainUserLogin.class);
+            startActivity(intent);
         });
 
         Button manage = findViewById(R.id.manageuser);
-        manage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start TaskManager activity
-                Intent intent = new Intent(Admin.this, AdminmanageEmployees.class);
-                startActivity(intent);
-            }
+        manage.setOnClickListener(v -> {
+            // Start AdminmanageEmployees activity
+            Intent intent = new Intent(Admin.this, AdminmanageEmployees.class);
+            startActivity(intent);
         });
 
         ImageView task = findViewById(R.id.task);
-        task.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start TaskManager activity
-                Intent intent = new Intent(Admin.this, AssignTaskActivity.class);
-                startActivity(intent);
-            }
+        task.setOnClickListener(v -> {
+            // Start AssignTaskActivity activity
+            Intent intent = new Intent(Admin.this, AssignTaskActivity.class);
+            startActivity(intent);
         });
 
         ImageView barchart = findViewById(R.id.barchart);
-        barchart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start TaskManager activity
-                Intent intent = new Intent(Admin.this, Adminreports.class);
-                startActivity(intent);
-            }
+        barchart.setOnClickListener(v -> {
+            // Start Adminreports activity
+            Intent intent = new Intent(Admin.this, Adminreports.class);
+            startActivity(intent);
         });
 
         ImageView bell = findViewById(R.id.bell);
-        bell.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start TaskManager activity
-                Intent intent = new Intent(Admin.this, Adminnotifications.class);
-                startActivity(intent);
-            }
+        bell.setOnClickListener(v -> {
+            // Start Adminnotifications activity
+            Intent intent = new Intent(Admin.this, Adminnotifications.class);
+            startActivity(intent);
         });
 
         Button registeruser = findViewById(R.id.registeruser);
-        registeruser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Admin.this, RegisterUser.class);
-                startActivity(intent);
-            }
+        registeruser.setOnClickListener(v -> {
+            Intent intent = new Intent(Admin.this, RegisterUser.class);
+            startActivity(intent);
         });
 
         ImageView user = findViewById(R.id.user);
-        user.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start TaskManager activity
-                Intent intent = new Intent(Admin.this, Adminprofile.class);
-                startActivity(intent);
-            }
+        user.setOnClickListener(v -> {
+            // Start Adminprofile activity
+            Intent intent = new Intent(Admin.this, Adminprofile.class);
+            startActivity(intent);
         });
     }
 
@@ -199,7 +177,7 @@ public class Admin extends AppCompatActivity {
         orgRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                final boolean[] announcementFetched = {false};
+                announcementFetched = false;
                 for (DataSnapshot orgSnapshot : snapshot.getChildren()) {
                     if (orgSnapshot.child("users").hasChild(currentUser.getUid())) {
                         DatabaseReference notificationsRef = orgSnapshot.child("notifications").getRef();
@@ -211,11 +189,11 @@ public class Admin extends AppCompatActivity {
                                     Message latestMessage = messageSnapshot.getValue(Message.class);
                                     if (latestMessage != null) {
                                         announcements.setText(latestMessage.getText());
-                                        announcementFetched[0] = true;
+                                        announcementFetched = true;
                                         break;
                                     }
                                 }
-                                if (!announcementFetched[0]) {
+                                if (!announcementFetched) {
                                     announcements.setText("No announcements available.");
                                 }
                             }
@@ -228,7 +206,7 @@ public class Admin extends AppCompatActivity {
                         break; // Exit loop once organization is found
                     }
                 }
-                if (!announcementFetched[0]) {
+                if (!announcementFetched) {
                     announcements.setText("No announcements available.");
                 }
             }
@@ -238,13 +216,15 @@ public class Admin extends AppCompatActivity {
                 Toast.makeText(Admin.this, "Failed to get organization: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
-
-
     private void fetchUserAndTaskCounts() {
-        DatabaseReference orgRef = FirebaseDatabase.getInstance().getReference("organization");
-
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(Admin.this, "No user logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
         orgRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -254,30 +234,32 @@ public class Admin extends AppCompatActivity {
                 int completedTaskCount = 0;
 
                 for (DataSnapshot orgSnapshot : snapshot.getChildren()) {
-                    DataSnapshot usersSnapshot = orgSnapshot.child("users");
-                    for (DataSnapshot userSnapshot : usersSnapshot.getChildren()) {
-                        String role = userSnapshot.child("role").getValue(String.class);
-                        if ("user".equals(role)) {
-                            userCount++;
-                        } else if ("admin".equals(role)) {
-                            adminCount++;
+                    if (orgSnapshot.child("users").hasChild(currentUser.getUid())){
+                        DataSnapshot usersSnapshot = orgSnapshot.child("users");
+                        for (DataSnapshot userSnapshot : usersSnapshot.getChildren()) {
+                            String role = userSnapshot.child("role").getValue(String.class);
+                            if ("user".equalsIgnoreCase(role)) {
+                                userCount++;
+                            } else if ("admin".equalsIgnoreCase(role)) {
+                                adminCount++;
+                            }
                         }
-                    }
 
-                    DataSnapshot tasksSnapshot = orgSnapshot.child("tasks");
-                    for (DataSnapshot taskSnapshot : tasksSnapshot.getChildren()) {
-                        taskCount++;
-                        String status = taskSnapshot.child("status").getValue(String.class);
-                        if ("Complete".equals(status)) {
-                            completedTaskCount++;
+                        DataSnapshot tasksSnapshot = orgSnapshot.child("tasks");
+                        for (DataSnapshot taskSnapshot : tasksSnapshot.getChildren()) {
+                            taskCount++;
+                            String status = taskSnapshot.child("status").getValue(String.class);
+                            if ("Complete".equalsIgnoreCase(status)) {
+                                completedTaskCount++;
+                            }
                         }
                     }
                 }
 
-                usernumbers.setText(String.valueOf(userCount));
-                adminnumber.setText(String.valueOf(adminCount));
-                tasksassigned.setText(String.valueOf(taskCount));
-                completedtasks.setText(String.valueOf(completedTaskCount));
+                animateTextView(0, userCount, usernumbers);
+                animateTextView(0, adminCount, adminnumber);
+                animateTextView(0, taskCount, tasksassigned);
+                animateTextView(0, completedTaskCount, completedtasks);
             }
 
             @Override
@@ -287,4 +269,17 @@ public class Admin extends AppCompatActivity {
         });
     }
 
+    // Method to animate the TextView
+    private void animateTextView(int start, int end, final TextView textView) {
+        ValueAnimator animator = ValueAnimator.ofInt(start, end);
+        animator.setDuration(1000); // Duration of the animation
+        animator.setInterpolator(new DecelerateInterpolator());
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                textView.setText(valueAnimator.getAnimatedValue().toString());
+            }
+        });
+        animator.start();
+    }
 }

@@ -143,6 +143,28 @@ public class Adminreports extends AppCompatActivity {
                         task.setStatus(status);
                         task.setAssignedUser(assignedUser);
                         taskList.add(task);
+                    } else {
+                        Task task = new Task();
+
+                        if (taskName != null) {
+                            task.setTaskName(taskName);
+                        } else {
+                            task.setTaskName("Not Assigned");
+                        }
+
+                        if (status != null) {
+                            task.setStatus(status);
+                        } else {
+                            task.setStatus("Not Attempted");
+                        }
+
+                        if (assignedUser != null) {
+                            task.setAssignedUser(assignedUser);
+                        } else {
+                            task.setAssignedUser("Not Assigned");
+                        }
+
+                        taskList.add(task);
                     }
                 }
                 taskAdapter.notifyDataSetChanged();

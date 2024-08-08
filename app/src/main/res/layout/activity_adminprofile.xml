@@ -77,9 +77,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
                 android:layout_marginTop="102dp"
+                android:fontFamily="@font/alfa_slab_one"
                 android:text="Personal Information"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="15sp" />
 
             <ImageView
                 android:layout_width="300dp"
@@ -95,9 +95,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
                 android:layout_marginTop="162dp"
+                android:fontFamily="@font/alfa_slab_one"
                 android:text="Personal Information"
-                android:textStyle="bold"
-                android:textSize="20sp"/>
+                android:textSize="15sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -122,9 +122,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
                 android:layout_marginTop="272dp"
-                android:textStyle="bold"
+                android:fontFamily="@font/alfa_slab_one"
                 android:text="Personal Information"
-                android:textSize="20sp"/>
+                android:textSize="15sp" />
 
             <ImageView
                 android:layout_width="300dp"
@@ -140,9 +140,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="60dp"
                 android:layout_marginTop="332dp"
-                android:textStyle="bold"
+                android:fontFamily="@font/alfa_slab_one"
                 android:text="Personal Information"
-                android:textSize="20sp"/>
+                android:textSize="15sp" />
 
             <Button
                 android:id="@+id/logoutbtn"
@@ -151,9 +151,9 @@
                 android:layout_marginLeft="49dp"
                 android:layout_marginTop="400dp"
                 android:backgroundTint="@color/dark"
-                android:textSize="20sp"
-                android:text="Log Out">
-            </Button>
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="LOG OUT"
+                android:textSize="20sp"></Button>
 
         </RelativeLayout>
 

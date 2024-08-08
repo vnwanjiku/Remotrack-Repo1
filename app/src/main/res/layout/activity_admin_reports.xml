@@ -57,11 +57,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#DDDDDD"
+                android:fontFamily="@font/alfa_slab_one"
                 android:padding="8dp"
                 android:text="Tasks"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:background="#DDDDDD"/>
+                android:textStyle="bold" />
 
             <!-- Heading for Admins -->
             <ListView
@@ -72,12 +73,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="#DDDDDD"
+                android:fontFamily="@font/alfa_slab_one"
                 android:padding="8dp"
                 android:text="Admins"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:background="#DDDDDD"
-                android:layout_marginTop="16dp"/>
+                android:textStyle="bold" />
 
             <ListView
                 android:id="@+id/listViewAdmins"
@@ -88,12 +90,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="#DDDDDD"
+                android:fontFamily="@font/alfa_slab_one"
                 android:padding="8dp"
                 android:text="Employees"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                android:background="#DDDDDD"
-                android:layout_marginTop="16dp"/>
+                android:textStyle="bold" />
 
             <ListView
                 android:id="@+id/listViewEmployees"
@@ -110,7 +113,6 @@
         android:layout_height="150dp"
         android:layout_gravity="bottom"
         android:layout_marginTop="680dp"
-        android:layout_marginBottom="10dp"
         android:background="@color/grey"
         android:orientation="horizontal"
         android:padding="8dp">

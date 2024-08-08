@@ -54,8 +54,8 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    <ScrollView
+        android:layout_width="match_parent"
     android:layout_height="568dp"
     android:layout_marginTop="110dp"
     android:background="@color/neutral"
@@ -85,6 +85,7 @@
                 android:id="@+id/text_task_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/alfa_slab_one"
                 android:text="Task Name"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -105,6 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/spinner_task_name"
                 android:layout_marginTop="16dp"
+                android:fontFamily="@font/alfa_slab_one"
                 android:text="Task Description"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -124,6 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/spinner_task_description"
                 android:layout_marginTop="16dp"
+                android:fontFamily="@font/alfa_slab_one"
                 android:text="Duration (in minutes)"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -182,7 +185,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/black"
-                android:text="Started"/>
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="Started" />
 
             <Button
                 android:id="@+id/btn_view_inprogress"
@@ -190,7 +194,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/black"
-                android:text="In Progress"/>
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="In Progress" />
 
         </LinearLayout>
 
@@ -229,7 +234,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/black"
-                android:text="Pending"/>
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="Pending" />
 
             <Button
                 android:id="@+id/btn_view_complete"
@@ -237,7 +243,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/black"
-                android:text="Complete"/>
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="Complete" />
         </LinearLayout>
 
 

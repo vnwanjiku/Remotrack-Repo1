@@ -146,7 +146,7 @@ public class MainUserLogin extends AppCompatActivity {
 
     private void checkUserRole(String uid, String organization) {
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("organization")
-                .child("Remo").child("users").child(uid);
+                .child(organization).child("users").child(uid);
 
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

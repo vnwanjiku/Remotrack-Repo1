@@ -3,6 +3,7 @@ package com.example.remoteapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -10,8 +11,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,11 +41,18 @@ public class ScheduleTaskActivity extends AppCompatActivity {
     private List<String> taskDescriptions = new ArrayList<>();
     private List<String> taskIds = new ArrayList<>();
     private String currentUserEmail;
+    private String currentUserOrganization;
+    private DatabaseReference mDatabaseUsers;
+    private FirebaseAuth mAuth;
+    private ArrayAdapter<String> taskDescriptionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_task);
+
+        // Initialize FirebaseAuth instance
+        mAuth = FirebaseAuth.getInstance();
 
         // Initialize UI elements
         spinnerTaskName = findViewById(R.id.spinner_task_name);
@@ -54,7 +65,7 @@ public class ScheduleTaskActivity extends AppCompatActivity {
         timePicker.setIs24HourView(true);
 
         // Get current user email from Firebase Auth
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             currentUserEmail = currentUser.getEmail();
         } else {
@@ -63,9 +74,11 @@ public class ScheduleTaskActivity extends AppCompatActivity {
             return;
         }
 
-        // Load tasks from the database
-        tasksRef = FirebaseDatabase.getInstance().getReference().child("organization").child("Remo").child("tasks");
-        loadTasks();
+        // Initialize DatabaseReference for users
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child("organization");
+
+        // Fetch current user organization
+        fetchCurrentUserOrganization();
 
         // Set onClick listener for the save task button
         btnSaveTask.setOnClickListener(new View.OnClickListener() {
@@ -75,43 +88,100 @@ public class ScheduleTaskActivity extends AppCompatActivity {
             }
         });
 
-        // Navigation
+        // Initialize navigation
         initializeNavigation();
     }
 
-    private void loadTasks() {
-        tasksRef.orderByChild("assignedUser").equalTo(currentUserEmail).addValueEventListener(new ValueEventListener() {
+    private void fetchCurrentUserOrganization() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(ScheduleTaskActivity.this, "No user logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String uid = currentUser.getUid();
+        mDatabaseUsers.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                taskNames.clear();
-                taskDescriptions.clear();
-                taskIds.clear();
-                for (DataSnapshot taskSnapshot : dataSnapshot.getChildren()) {
-                    String taskName = taskSnapshot.child("taskName").getValue(String.class);
-                    String taskDescription = taskSnapshot.child("taskDescription").getValue(String.class);
-                    taskNames.add(taskName);
-                    taskDescriptions.add(taskDescription);
-                    taskIds.add(taskSnapshot.getKey());
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot organizationSnapshot : snapshot.getChildren()) {
+                    if (organizationSnapshot.child("users").hasChild(uid)) {
+                        currentUserOrganization = organizationSnapshot.getKey();
+                        tasksRef = FirebaseDatabase.getInstance().getReference()
+                                .child("organization")
+                                .child(currentUserOrganization)
+                                .child("tasks");
+                        loadTasks();
+                        break;
+                    }
                 }
-                // Update the spinners with task names and descriptions
-                updateSpinners();
+                if (currentUserOrganization == null) {
+                    Toast.makeText(ScheduleTaskActivity.this, "Organization not found for current user", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(ScheduleTaskActivity.this, "Failed to load tasks", Toast.LENGTH_SHORT).show();
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ScheduleTaskActivity.this, "Failed to get organization: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void updateSpinners() {
+    private void loadTasks() {
+        if (tasksRef != null) {
+            tasksRef.orderByChild("assignedUser").equalTo(currentUserEmail).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    taskNames.clear();
+                    taskDescriptions.clear();
+                    taskIds.clear();
+                    for (DataSnapshot taskSnapshot : dataSnapshot.getChildren()) {
+                        String taskName = taskSnapshot.child("taskName").getValue(String.class);
+                        String taskDescription = taskSnapshot.child("taskDescription").getValue(String.class);
+                        taskNames.add(taskName);
+                        taskDescriptions.add(taskDescription);
+                        taskIds.add(taskSnapshot.getKey());
+                    }
+                    // Update the spinners with task names and descriptions
+                    updateTaskNameSpinner();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(ScheduleTaskActivity.this, "Failed to load tasks", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void updateTaskNameSpinner() {
         ArrayAdapter<String> taskNameAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, taskNames);
         taskNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTaskName.setAdapter(taskNameAdapter);
 
-        ArrayAdapter<String> taskDescriptionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, taskDescriptions);
+        taskDescriptionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, new ArrayList<>());
         taskDescriptionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTaskDescription.setAdapter(taskDescriptionAdapter);
+
+        spinnerTaskName.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                updateTaskDescriptionSpinner(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                taskDescriptionAdapter.clear();
+            }
+        });
+    }
+
+    private void updateTaskDescriptionSpinner(int position) {
+        if (position >= 0 && position < taskDescriptions.size()) {
+            List<String> descriptions = new ArrayList<>();
+            descriptions.add(taskDescriptions.get(position));
+            taskDescriptionAdapter.clear();
+            taskDescriptionAdapter.addAll(descriptions);
+        }
     }
 
     private void saveTask() {

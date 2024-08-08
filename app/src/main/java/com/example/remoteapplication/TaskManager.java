@@ -1,5 +1,6 @@
 package com.example.remoteapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,15 +30,20 @@ import java.util.List;
 
 public class TaskManager extends AppCompatActivity {
 
+    private static final String TASKS_NODE = "tasks";
+    private static final String ORGANIZATION_NODE = "organization";
+    private static final String USERS_NODE = "users";
+
     private TextView textDurationPicker;
     private Spinner taskNameSpinner, taskDescriptionSpinner;
-    private Button btnstarted, btninprogress, btnpending, btncomplete;
+    private Button btnStarted, btnInProgress, btnPending, btnComplete;
     private int hours = 0;
     private int minutes = 0;
     private String currentUserEmail;
-
-    private DatabaseReference tasksRef;
+    private FirebaseAuth mAuth;
+    private DatabaseReference tasksRef, mDatabaseUsers;
     private List<String> taskNamesList;
+    private String currentUserOrganization;
     private ArrayAdapter<String> taskNameAdapter;
 
     @Override
@@ -45,55 +51,71 @@ public class TaskManager extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_taskmanager);
 
+        initializeViews();
+        initializeFirebase();
+        setupListeners();
+        fetchCurrentUserOrganization();
+    }
+
+    private void initializeViews() {
         textDurationPicker = findViewById(R.id.text_duration_picker);
         taskNameSpinner = findViewById(R.id.spinner_task_name);
         taskDescriptionSpinner = findViewById(R.id.spinner_task_description);
-        btnstarted = findViewById(R.id.btn_view_started);
-        btninprogress = findViewById(R.id.btn_view_inprogress);
-        btnpending = findViewById(R.id.btn_view_pending);
-        btncomplete = findViewById(R.id.btn_view_complete);
+        btnStarted = findViewById(R.id.btn_view_started);
+        btnInProgress = findViewById(R.id.btn_view_inprogress);
+        btnPending = findViewById(R.id.btn_view_pending);
+        btnComplete = findViewById(R.id.btn_view_complete);
+    }
 
-        // Simulate getting current user's email
+    private void initializeFirebase() {
+        mAuth = FirebaseAuth.getInstance();
         currentUserEmail = getCurrentUserEmail();
+        mDatabaseUsers = FirebaseDatabase.getInstance().getReference().child(ORGANIZATION_NODE);
+    }
 
-        initializeSpinners();
+    private void setupListeners() {
+        textDurationPicker.setOnClickListener(v -> showDurationPickerDialog());
 
-        textDurationPicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDurationPickerDialog();
-            }
-        });
-
-        btnstarted.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateTaskStatus("Started");
-            }
-        });
-
-        btninprogress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateTaskStatus("In Progress");
-            }
-        });
-
-        btnpending.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateTaskStatus("Pending");
-            }
-        });
-
-        btncomplete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateTaskStatus("Complete");
-            }
-        });
+        btnStarted.setOnClickListener(v -> updateTaskStatus("Started"));
+        btnInProgress.setOnClickListener(v -> updateTaskStatus("In Progress"));
+        btnPending.setOnClickListener(v -> updateTaskStatus("Pending"));
+        btnComplete.setOnClickListener(v -> updateTaskStatus("Complete"));
 
         initializeNavigation();
+    }
+
+    private void fetchCurrentUserOrganization() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(TaskManager.this, "No user logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String uid = currentUser.getUid();
+        mDatabaseUsers.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot organizationSnapshot : snapshot.getChildren()) {
+                    if (organizationSnapshot.child(USERS_NODE).hasChild(uid)) {
+                        currentUserOrganization = organizationSnapshot.getKey();
+                        tasksRef = FirebaseDatabase.getInstance().getReference()
+                                .child(ORGANIZATION_NODE)
+                                .child(currentUserOrganization)
+                                .child(TASKS_NODE);
+                        initializeSpinners();
+                        break;
+                    }
+                }
+                if (currentUserOrganization == null) {
+                    Toast.makeText(TaskManager.this, "Organization not found for current user", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(TaskManager.this, "Failed to get organization: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initializeSpinners() {
@@ -102,23 +124,24 @@ public class TaskManager extends AppCompatActivity {
         taskNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         taskNameSpinner.setAdapter(taskNameAdapter);
 
-        tasksRef = FirebaseDatabase.getInstance().getReference().child("organization").child("Remo").child("tasks");
         tasksRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 taskNamesList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String assignedUser = snapshot.child("assignedUser").getValue(String.class);
                     if (assignedUser != null && assignedUser.equals(currentUserEmail)) {
                         String taskName = snapshot.child("taskName").getValue(String.class);
-                        taskNamesList.add(taskName);
+                        if (taskName != null) {
+                            taskNamesList.add(taskName);
+                        }
                     }
                 }
                 taskNameAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(TaskManager.this, "Failed to load tasks: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -140,23 +163,25 @@ public class TaskManager extends AppCompatActivity {
     private void populateTaskDescriptionSpinner(String selectedTaskName) {
         tasksRef.orderByChild("taskName").equalTo(selectedTaskName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> taskDescriptions = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String assignedUser = snapshot.child("assignedUser").getValue(String.class);
                     if (assignedUser != null && assignedUser.equals(currentUserEmail)) {
                         String taskDescription = snapshot.child("taskDescription").getValue(String.class);
-                        List<String> taskDescriptions = new ArrayList<>();
-                        taskDescriptions.add(taskDescription);
-                        ArrayAdapter<String> descriptionAdapter = new ArrayAdapter<>(TaskManager.this,
-                                android.R.layout.simple_spinner_item, taskDescriptions);
-                        descriptionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        taskDescriptionSpinner.setAdapter(descriptionAdapter);
+                        if (taskDescription != null) {
+                            taskDescriptions.add(taskDescription);
+                        }
                     }
                 }
+                ArrayAdapter<String> descriptionAdapter = new ArrayAdapter<>(TaskManager.this,
+                        android.R.layout.simple_spinner_item, taskDescriptions);
+                descriptionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                taskDescriptionSpinner.setAdapter(descriptionAdapter);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(TaskManager.this, "Failed to load task descriptions: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -194,85 +219,85 @@ public class TaskManager extends AppCompatActivity {
     }
 
     private void updateTaskStatus(String status) {
-        String selectedTaskName = taskNameSpinner.getSelectedItem().toString();
-        String selectedTaskDescription = taskDescriptionSpinner.getSelectedItem().toString();
+        String selectedTaskName = (String) taskNameSpinner.getSelectedItem();
+        String selectedTaskDescription = (String) taskDescriptionSpinner.getSelectedItem();
         String duration = textDurationPicker.getText().toString();
+        if (selectedTaskName == null || selectedTaskDescription == null) {
+            Toast.makeText(this, "Please select a task name and description", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         tasksRef.orderByChild("taskName").equalTo(selectedTaskName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String taskDescription = snapshot.child("taskDescription").getValue(String.class);
                     if (taskDescription != null && taskDescription.equals(selectedTaskDescription)) {
                         snapshot.getRef().child("status").setValue(status);
                         snapshot.getRef().child("duration").setValue(duration);
+                        Toast.makeText(TaskManager.this, "Task status updated to: " + status, Toast.LENGTH_SHORT).show();
                     }
                 }
-                Toast.makeText(TaskManager.this, "Task updated with status: " + status + " and duration: " + duration, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(TaskManager.this, "Failed to update task status: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void initializeNavigation() {
-        ImageView leftArrow = findViewById(R.id.left_arrow);
-        leftArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TaskManager.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
+            ImageView leftArrow = findViewById(R.id.left_arrow);
+            leftArrow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(TaskManager.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            });
 
-        ImageView task = findViewById(R.id.task);
-        task.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TaskManager.this, TaskManager.class);
-                startActivity(intent);
-            }
-        });
+            ImageView task = findViewById(R.id.task);
+            task.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(TaskManager.this, TaskManager.class);
+                    startActivity(intent);
+                }
+            });
 
-        ImageView calendar = findViewById(R.id.calendar);
-        calendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TaskManager.this, ScheduleTaskActivity.class);
-                startActivity(intent);
-            }
-        });
+            ImageView calendar = findViewById(R.id.calendar);
+            calendar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(TaskManager.this, ScheduleTaskActivity.class);
+                    startActivity(intent);
+                }
+            });
 
-        ImageView bell = findViewById(R.id.bell);
-        bell.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TaskManager.this, Notification.class);
-                startActivity(intent);
-            }
-        });
+            ImageView bell = findViewById(R.id.bell);
+            bell.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(TaskManager.this, Notification.class);
+                    startActivity(intent);
+                }
+            });
 
-        ImageView user = findViewById(R.id.user);
-        user.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TaskManager.this, Profile.class);
-                startActivity(intent);
-            }
-        });
+            ImageView user = findViewById(R.id.user);
+            user.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(TaskManager.this, Profile.class);
+                    startActivity(intent);
+                }
+            });
+
+
     }
 
     private String getCurrentUserEmail() {
-        // Get current user email from Firebase Auth
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            return currentUser.getEmail();
-        } else {
-            Toast.makeText(this, "User not authenticated", Toast.LENGTH_SHORT).show();
-            finish(); // Close the activity if user is not authenticated
-            return null; // Return null or handle as needed based on your app's flow
-        }
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        return currentUser != null ? currentUser.getEmail() : null;
     }
 }

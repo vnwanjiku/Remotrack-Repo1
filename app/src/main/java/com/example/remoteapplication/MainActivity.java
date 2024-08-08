@@ -5,31 +5,33 @@ import static androidx.fragment.app.FragmentManager.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.animation.ValueAnimator;
 
+import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.ImageView;
-import android.animation.ValueAnimator;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.material.card.MaterialCardView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
     private MaterialCardView card3, card4, card5;
-    private TextView taskTextView3, taskTextView4, taskTextView5, userrealname, userrealtime, announcements, tasknumber, taskstarted, taskcompleted;
+    private TextView taskTextView3, taskTextView4, taskTextView5;
+    private TextView userrealname, userrealtime, announcements;
+    private TextView tasknumber, taskstarted, taskcompleted;
+
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabaseUsers, mDatabaseTasks;
     private String currentUserOrganization;
@@ -39,9 +41,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initializeUI();
         mAuth = FirebaseAuth.getInstance();
         mDatabaseUsers = FirebaseDatabase.getInstance().getReference("organization");
 
+        fetchCurrentUserOrganization();
+        setGreetingMessage();
+        setupNavigation();
+    }
+
+    private void initializeUI() {
         card3 = findViewById(R.id.card3);
         card4 = findViewById(R.id.card4);
         card5 = findViewById(R.id.card5);
@@ -57,39 +66,28 @@ public class MainActivity extends AppCompatActivity {
         userrealname = findViewById(R.id.userrealname);
         userrealtime = findViewById(R.id.userrealtime);
         announcements = findViewById(R.id.announcements);
+    }
 
-        fetchCurrentUserOrganization();
-        setGreetingMessage();
-
+    private void setupNavigation() {
         ImageView leftArrow = findViewById(R.id.left_arrow);
-        leftArrow.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, MainUserLogin.class);
-            startActivity(intent);
-        });
+        leftArrow.setOnClickListener(v -> navigateTo(MainUserLogin.class));
 
         ImageView task = findViewById(R.id.task);
-        task.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, TaskManager.class);
-            startActivity(intent);
-        });
+        task.setOnClickListener(v -> navigateTo(TaskManager.class));
 
         ImageView calendar = findViewById(R.id.calendar);
-        calendar.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, ScheduleTaskActivity.class);
-            startActivity(intent);
-        });
+        calendar.setOnClickListener(v -> navigateTo(ScheduleTaskActivity.class));
 
         ImageView bell = findViewById(R.id.bell);
-        bell.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, Notification.class);
-            startActivity(intent);
-        });
+        bell.setOnClickListener(v -> navigateTo(Notification.class));
 
         ImageView user = findViewById(R.id.user);
-        user.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, Profile.class);
-            startActivity(intent);
-        });
+        user.setOnClickListener(v -> navigateTo(Profile.class));
+    }
+
+    private void navigateTo(Class<?> destination) {
+        Intent intent = new Intent(MainActivity.this, destination);
+        startActivity(intent);
     }
 
     private void fetchCurrentUserOrganization() {
@@ -100,9 +98,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         String uid = currentUser.getUid();
-        DatabaseReference userRef = mDatabaseUsers;
-
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabaseUsers.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot organizationSnapshot : snapshot.getChildren()) {
@@ -111,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                         mDatabaseTasks = mDatabaseUsers.child(currentUserOrganization).child("tasks");
                         fetchUserName();
                         loadUserTasks();
-                        fetchLatestAnnouncement();  // Fetch the latest announcement after loading tasks
+                        fetchLatestAnnouncement();
                         break;
                     }
                 }
@@ -131,18 +127,14 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             String uid = currentUser.getUid();
-            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("organization").child(currentUserOrganization).child("users").child(uid);
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("organization")
+                    .child(currentUserOrganization).child("users").child(uid);
 
             userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     String firstName = snapshot.child("firstName").getValue(String.class);
-
-                    if (firstName != null) {
-                        userrealname.setText(firstName);
-                    } else {
-                        userrealname.setText("Welcome");
-                    }
+                    userrealname.setText(firstName != null ? firstName : "Welcome");
                 }
 
                 @Override
@@ -152,10 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } else {
-            // No user is signed in, handle this case if needed
-            // For example, redirect to login screen
-            Intent intent = new Intent(MainActivity.this, MainUserLogin.class);
-            startActivity(intent);
+            navigateTo(MainUserLogin.class);
             finish();
         }
     }
@@ -164,9 +153,9 @@ public class MainActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
         String timeOfDay;
-        if (hourOfDay >= 0 && hourOfDay < 12) {
+        if (hourOfDay < 12) {
             timeOfDay = "Morning,";
-        } else if (hourOfDay >= 12 && hourOfDay < 17) {
+        } else if (hourOfDay < 17) {
             timeOfDay = "Afternoon,";
         } else {
             timeOfDay = "Evening,";
@@ -226,7 +215,6 @@ public class MainActivity extends AppCompatActivity {
                     if (taskCount >= 3) break;
                 }
 
-                // Animate the count TextViews
                 animateTextView(0, taskCount, tasknumber);
                 animateTextView(0, startedCount, taskstarted);
                 animateTextView(0, completedCount, taskcompleted);
@@ -269,9 +257,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void animateTextView(int initialValue, int finalValue, TextView textView) {
         ValueAnimator animator = ValueAnimator.ofInt(initialValue, finalValue);
-        animator.setDuration(1000); // Animation duration in milliseconds
-        animator.addUpdateListener(animation -> textView.setText(animation.getAnimatedValue().toString()));
+        animator.setDuration(1000);
+        animator.addUpdateListener(animation -> textView.setText(String.valueOf(animation.getAnimatedValue())));
         animator.start();
     }
-
 }

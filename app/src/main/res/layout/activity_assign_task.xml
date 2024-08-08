@@ -46,8 +46,8 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    <ScrollView
+        android:layout_width="match_parent"
     android:layout_marginTop="131dp"
     android:layout_height="549dp"
     android:background="@color/neutral"
@@ -71,24 +71,26 @@
                 android:id="@+id/text_create_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Create Task"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="Create Task"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <!-- Task Name -->
             <TextView
                 android:id="@+id/text_task_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Task Name"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
                 android:layout_below="@id/text_create_task"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="Task Name"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/edit_task_name"
@@ -96,21 +98,24 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_task_name"
                 android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_background"
+                android:fontFamily="@font/alfa_slab_one"
                 android:hint="Enter task name"
                 android:padding="8dp"
-                android:background="@drawable/edittext_background" />
+                android:textSize="16sp" />
 
             <!-- Task Description -->
             <TextView
                 android:id="@+id/text_task_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Task Description"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
                 android:layout_below="@id/edit_task_name"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="Task Description"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/edit_task_description"
@@ -118,21 +123,24 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_task_description"
                 android:layout_marginTop="8dp"
+                android:background="@drawable/edittext_background"
+                android:fontFamily="@font/alfa_slab_one"
                 android:hint="Enter task description"
                 android:padding="8dp"
-                android:background="@drawable/edittext_background" />
+                android:textSize="16sp" />
 
             <!-- Task Date -->
             <TextView
                 android:id="@+id/text_task_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Due Date"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
                 android:layout_below="@id/edit_task_description"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="Due Date"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <DatePicker
                 android:id="@+id/date_picker"
@@ -154,12 +162,13 @@
                     android:id="@+id/btn_add_task"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/black"
-                    android:text="Add"
-                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/alfa_slab_one"
                     android:padding="12dp"
-                    android:layout_marginEnd="8dp" />
+                    android:text="ADD"
+                    android:textColor="@android:color/white" />
 
             </LinearLayout>
         </RelativeLayout>
@@ -177,12 +186,13 @@
                 android:id="@+id/text_assign_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Configure Task"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="Configure Task"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
 
 
@@ -191,12 +201,13 @@
                 android:id="@+id/text_task_to_configure"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Task"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
                 android:layout_below="@id/text_assign_task"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="Task"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/spinner_select_task_to_configure"
@@ -211,12 +222,13 @@
                 android:id="@+id/text_task_description_config"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Task Description"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
                 android:layout_below="@id/spinner_select_task_to_configure"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="Task Description"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/edit_task_description_config"
@@ -233,12 +245,13 @@
                 android:id="@+id/text_select_individual"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Assign to"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
                 android:layout_below="@id/edit_task_description_config"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="Assign to"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/spinner_select_individual"
@@ -260,12 +273,13 @@
                     android:id="@+id/btn_update_task"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:backgroundTint="@color/black"
-                    android:text="Update"
-                    android:textColor="@android:color/white"
+                    android:backgroundTint="@color/grey"
+                    android:fontFamily="@font/alfa_slab_one"
                     android:padding="12dp"
-                    android:layout_marginEnd="8dp" />
+                    android:text="UPDATE"
+                    android:textColor="@android:color/black" />
 
                 <Button
                     android:id="@+id/btn_delete_task"
@@ -273,9 +287,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:backgroundTint="@color/black"
-                    android:text="Delete"
-                    android:textColor="@android:color/white"
-                    android:padding="12dp" />
+                    android:fontFamily="@font/alfa_slab_one"
+                    android:padding="12dp"
+                    android:text="DELETE"
+                    android:textColor="@android:color/white" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

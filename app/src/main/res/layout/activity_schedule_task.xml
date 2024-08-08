@@ -48,7 +48,7 @@
 
     </com.google.android.material.card.MaterialCardView>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="549dp"
         android:layout_marginTop="131dp"
@@ -64,11 +64,12 @@
                 android:id="@+id/text_task_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/alfa_slab_one"
                 android:text="Task Name"
-                android:textSize="18sp"
-                android:textStyle="bold"
                 android:textColor="@android:color/black"
-                android:layout_marginTop="16dp"/>
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/spinner_task_name"
@@ -84,12 +85,13 @@
                 android:id="@+id/text_task_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Task Description"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
                 android:layout_below="@id/spinner_task_name"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="Task Description"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/spinner_task_description"
@@ -105,12 +107,13 @@
                 android:id="@+id/text_task_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Task Date"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
                 android:layout_below="@id/spinner_task_description"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="Task Date"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <DatePicker
                 android:id="@+id/date_picker"
@@ -124,12 +127,13 @@
                 android:id="@+id/text_task_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Task Time"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
                 android:layout_below="@id/date_picker"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/alfa_slab_one"
+                android:text="Task Time"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TimePicker
                 android:id="@+id/time_picker"
@@ -145,12 +149,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/time_picker"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="32dp"
                 android:backgroundTint="@color/black"
-                android:text="Schedule Task"
-                android:textColor="@android:color/white"
+                android:fontFamily="@font/alfa_slab_one"
                 android:padding="12dp"
-                android:layout_centerHorizontal="true"/>
+                android:text="SCHEDULE TASK"
+                android:textColor="@android:color/white" />
         </RelativeLayout>
     </ScrollView>
 
