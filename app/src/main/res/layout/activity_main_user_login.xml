@@ -14,6 +14,14 @@
         android:scaleType="centerInside"
         android:src="@drawable/remotrack" />
 
+    <ProgressBar
+        android:id="@+id/loadingCircle"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="335dp"
+        android:layout_marginTop="10dp"
+        android:visibility="gone" />
+
     <ImageView
         android:layout_width="119dp"
         android:layout_height="114dp"
@@ -79,7 +87,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/black"
-            android:text="Login"
+            android:fontFamily="@font/alfa_slab_one"
+            android:text="LOGIN"
             android:textColor="@android:color/white" />
 
         <Button
@@ -87,15 +96,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Register here"
-            android:textColor="@android:color/white" />
+            android:fontFamily="@font/alfa_slab_one"
+            android:backgroundTint="@color/grey"
+            android:text="REGISTER"
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="139dp"
+        android:layout_width="210dp"
+        android:layout_height="210dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="12dp"
-        android:src="@drawable/coworker1" />
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="170dp"
+        android:src="@drawable/teleworking" />
 
 </RelativeLayout>

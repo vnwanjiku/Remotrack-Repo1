@@ -57,8 +57,17 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="410dp"
         android:backgroundTint="@color/dark"
-        android:text="Get Started "
+        android:fontFamily="@font/alfa_slab_one"
+        android:text="GET STARTED"
         android:textColor="@android:color/white" />
+
+    <ProgressBar
+        android:id="@+id/loadingCircle"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="460dp"
+        android:visibility="gone" />
 
     <ImageView
         android:layout_width="300dp"

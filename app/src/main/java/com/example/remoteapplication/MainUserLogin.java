@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,6 +42,7 @@ public class MainUserLogin extends AppCompatActivity {
         editPassword = findViewById(R.id.userpassword1);
         loginButton = findViewById(R.id.login_button);
         registerButton = findViewById(R.id.register_button);
+        ProgressBar loadingCircle = findViewById(R.id.loadingCircle);
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
@@ -52,20 +54,30 @@ public class MainUserLogin extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingCircle.setVisibility(View.VISIBLE);
                 loginUser();
             }
         });
+
 
         // Set an OnClickListener on the register button
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Create an Intent to start RegisterActivity
+                loadingCircle.setVisibility(View.VISIBLE);
                 Intent intent = new Intent(MainUserLogin.this, RegisterActivity.class);
                 // Start RegisterActivity
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ProgressBar loadingCircle = findViewById(R.id.loadingCircle);
+        loadingCircle.setVisibility(View.GONE);
     }
 
     private void loginUser() {
